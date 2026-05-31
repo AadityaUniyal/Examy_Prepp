@@ -1,58 +1,132 @@
-# ExamEve — AI-Powered Exam Panic Optimizer
+# 🌬️ ExamEve — AI-Powered Exam Preparation & Panic Optimizer
 
-Smart exam preparation platform helping students study efficiently in 48-96 hours.
-
-## Quick Start
-
-```bash
-# Start with Docker Compose (recommended)
-docker-compose up
-
-# Or start services individually
-cd frontend && npm install && npm run dev      # localhost:3000
-cd backend && npm install && npm run dev       # localhost:4000
-cd ml-service && pip install -r requirements.txt && python -m uvicorn app.main:app --reload  # localhost:8000
-```
-
-## Project Structure
-
-- **frontend/** - Next.js 14 React app
-- **backend/** - Node.js + Apollo GraphQL
-- **ml-service/** - Python FastAPI ML microservice
-
-## Features
-
-- AI-driven study plan generation
-- Confidence calibration using ML
-- Panic detection from behavioral signals
-- Spaced repetition nudges
-- Adaptive quiz engine
-- Pre-exam cheat sheet generation
-
-## Tech Stack
-
-Frontend: Next.js, React, Tailwind, Zustand, Apollo Client
-Backend: Node.js, Express, Apollo GraphQL, PostgreSQL, Prisma
-ML: Python, FastAPI, scikit-learn, XGBoost, spaCy
-Real-time: Socket.io
-Queue: BullMQ + Redis
-Auth: NextAuth.js
-
-## Environment Variables
-
-See `.env.example` files in each service folder.
-
-## Development
-
-1. Install dependencies: `npm install` (frontend/backend), `pip install` (ml-service)
-2. Create `.env` files from `.env.example`
-3. Start databases: `docker-compose up postgres redis`
-4. Run services in separate terminals
-
-## Deployment
-
-Vercel (frontend), Render (backend), Supabase (database), Upstash (redis), Cloudinary (files)
+ExamEve is an industry-grade, microservice-driven platform designed to optimize exam preparation and manage study anxiety. Engineered for students facing high-stakes examinations, ExamEve uses machine learning heuristics to structure dynamic 48-to-96-hour study plans, calibrate self-reported mastery levels, and deliver real-time interactive anxiety management tools.
 
 ---
 
-Build it. Ship it. Own it.
+## 🏗️ Architecture Overview
+
+ExamEve is designed as a distributed multi-service platform:
+
+```mermaid
+graph TD
+    Client[Next.js Client] <-->|GraphQL & WebSockets| API[Apollo Express Server]
+    API <-->|Prisma ORM| DB[(PostgreSQL Database)]
+    API <-->|REST API| ML[FastAPI ML Microservice]
+    Client <-->|WebSockets| SocketHandler[Socket.io Room Manager]
+```
+
+### Core Services
+1. **Frontend (`/frontend`)**: Next.js 14 Web Portal styled with clean dark-mode custom CSS, animated glassmorphic dashboards, interactive Recharts visualizations (Area, Pie, Radar charts), and responsive navigation layout.
+2. **Backend Gateway (`/backend`)**: Modular Node.js Express server running Apollo Server (GraphQL). Features JWT signature verification context parser, structured database relations managed with Prisma, and interactive real-time Socket.io signaling.
+3. **Machine Learning Service (`/ml-service`)**: Python Uvicorn engine running FastAPI. Handles confidence calibration models, behavioral panic signal analyzers, score prediction bands, and optimal topic prioritization pipelines.
+
+---
+
+## ⚡ Main Workflows & Operational Mechanics
+
+### 1. The Onboarding & Syllabus Extraction Flow
+* Users input exam metadata (subject, examination date, and academic board rules) and import target syllabus files.
+* Topics are structured inside the database with customizable weightings and complexity indicators.
+* Students assign initial subjective confidence scores (0-10) to initialize their mastery matrix.
+
+### 2. ML-Calibrated Study Plan Generation
+* The student triggers a study plan generation request (48, 72, or 96-hour duration options).
+* The Backend queries the ML Microservice (`/api/prioritize-topics`) to rank syllabus components based on urgency:
+  $$\text{Urgency} = \text{Topic Weightage} \times (1 - \text{Calibrated Confidence})$$
+* A chronological timeline is built, scheduling dedicated study blocks, review windows, and breaks.
+* If a student falls behind, the "Emergency Re-Plan" protocol deactivates older plans and recalculates schedules instantly.
+
+### 3. Smart Study Session Tracking
+* Users launch scheduled study blocks through the focus panel timer overlay (25, 45, or 60 min intervals).
+* During focus sessions, Socket.io tracks real-time progress.
+* Upon completion, students submit behavioral markers:
+  - Energy level rating (1 to 5 Stars)
+  - Post-session self-reported confidence revision
+  - Log notes
+* The session metrics are serialized to PostgreSQL, updating progress charts.
+
+### 4. Interactive Panic Recovery Protocol
+* High anxiety triggers (rapid study block switching, low confidence self-reports, or manual panic trigger clicks) activate the **Panic Recovery Mode**.
+* The portal launches a 4-7-8 breathing visualizer modal, prompting the student to relax:
+  - **Inhale**: 4 seconds (visual circle expansion)
+  - **Hold**: 7 seconds (circle static scale)
+  - **Exhale**: 8 seconds (visual circle contraction)
+* When completed, a `'panic-recovered'` custom event fires, restoring readiness metrics on dashboards and returning focus directly to the single highest-priority pending task.
+
+### 5. Performance Analytics & Radar Matrix
+* Tracks study progress metrics dynamically using Recharts:
+  - **Focus Progression**: Shows time logged per day over time.
+  - **Mastery radar matrix**: A polar chart mapping calibrated mastery levels per topic category.
+  - **Study Distribution**: Pie chart breaking down focus allocation percentages.
+
+---
+
+## 🚀 Quick Start Guide
+
+Initialize the platform using Docker Compose (orchestrates postgres, client, backend, and ML services concurrently):
+
+```bash
+# Clone the repository
+git clone https://github.com/AadityaUniyal/Examy_Prepp.git
+cd Examy_Prepp/exameve
+
+# Launch all containers
+docker-compose up --build
+```
+
+### Manual Development Setup
+
+If you prefer starting services individually for development:
+
+#### 1. Database & Backend Setup
+```bash
+cd backend
+npm install
+
+# Configure your environment (.env)
+cp .env.example .env
+
+# Run database migrations and seed default user (mock-student-123)
+npx prisma migrate dev
+node src/prisma/seed.js
+
+# Start backend dev server (Port 4000)
+npm run dev
+```
+
+#### 2. ML Service Setup
+```bash
+cd ml-service
+
+# Initialize Python virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start FastAPI server (Port 8000)
+python -m uvicorn app.main:app --reload
+```
+
+#### 3. Frontend Portal Setup
+```bash
+cd frontend
+npm install
+
+# Configure environment (.env.local)
+cp .env.example .env.local
+
+# Run frontend portal (Port 3000)
+npm run dev
+```
+
+---
+
+## 🛠️ Technology Stack
+
+* **Frontend**: Next.js 14, Apollo Client, Recharts, Tailwind CSS, Zustand, Lucide React, Radix UI.
+* **Backend**: Node.js, Express, Apollo Server (GraphQL), Socket.io, Prisma ORM, JSON Web Tokens.
+* **Database**: PostgreSQL (Relational master), Prisma migrations.
+* **Machine Learning Microservice**: Python, FastAPI, Uvicorn, Axios.
