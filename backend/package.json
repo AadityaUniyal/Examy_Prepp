@@ -1,0 +1,32 @@
+{
+  "name": "exameve-backend",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "build": "echo 'Backend built'",
+    "start": "node src/index.js",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "apollo-server-express": "^3.13.0",
+    "graphql": "^16.8.0",
+    "@prisma/client": "^5.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "axios": "^1.6.0",
+    "socket.io": "^4.7.0",
+    "bullmq": "^3.12.0",
+    "redis": "^4.6.0",
+    "nodemailer": "^6.9.0",
+    "@google/generative-ai": "^0.1.0",
+    "multer": "^1.4.0",
+    "next-auth": "^4.24.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.0.0"
+  }
+}

@@ -1,0 +1,319 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  googleId      String?  @unique
+  role          UserRole @default(STUDENT)
+
+  exams         Exam[]
+  topicConfidence TopicConfidence[]
+  studyPlans    StudyPlan[]
+  studySessions StudySession[]
+  quizAttempts  QuizAttempt[]
+  panicEvents   PanicEvent[]
+  spacedRepQueue SpacedRepetitionQueue[]
+  notifications Notification[]
+  institutions  Institution[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([email])
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
+  INSTITUTION_ADMIN
+}
+
+model Exam {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name          String
+  examDate      DateTime
+  board         String
+  totalMarks    Int?
+
+  syllabus      Syllabus?
+  topics        Topic[]
+  studyPlans    StudyPlan[]
+  quizAttempts  QuizAttempt[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([examDate])
+}
+
+model Syllabus {
+  id            String   @id @default(cuid())
+  examId        String   @unique
+  exam          Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  rawPdfUrl     String?
+  extractionStatus ExtractionStatus @default(PENDING)
+  topics        Topic[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+enum ExtractionStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+}
+
+model Topic {
+  id            String   @id @default(cuid())
+  syllabusId    String
+  syllabus      Syllabus @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
+  examId        String
+  exam          Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  name          String
+  parentTopicId String?
+  parentTopic   Topic?   @relation("subtopics", fields: [parentTopicId], references: [id], onDelete: SetNull)
+  subTopics     Topic[]  @relation("subtopics")
+
+  weightage     Float    @default(0)
+  complexityScore Float @default(0.5)
+  estimatedHours Float  @default(2)
+
+  topicConfidence TopicConfidence[]
+  studySessions StudySession[]
+  quizAttempts  QuizAttempt[]
+  planBlocks    PlanBlock[]
+  spacedRepQueue SpacedRepetitionQueue[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([syllabusId])
+  @@index([examId])
+  @@index([parentTopicId])
+}
+
+model TopicConfidence {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId       String
+  topic         Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  selfScore     Float    @default(5)
+  calibratedScore Float  @default(0.5)
+  lastRevisedAt DateTime?
+  revisionCount Int      @default(0)
+
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, topicId])
+  @@index([userId])
+  @@index([topicId])
+}
+
+model StudyPlan {
+  id            String   @id @default(cuid())
+  examId        String
+  exam          Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  generatedAt   DateTime @default(now())
+  isActive      Boolean  @default(true)
+  totalHours    Float    @default(48)
+  planType      PlanType @default(HOURS_48)
+
+  blocks        PlanBlock[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([examId])
+  @@index([userId])
+  @@index([isActive])
+}
+
+enum PlanType {
+  HOURS_48
+  HOURS_72
+  HOURS_96
+  CUSTOM
+}
+
+model PlanBlock {
+  id            String   @id @default(cuid())
+  planId        String
+  plan          StudyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  topicId       String
+  topic         Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  scheduledStart DateTime
+  durationMins  Int
+  blockType     BlockType @default(STUDY)
+  status        BlockStatus @default(PENDING)
+  priorityRank  Int
+
+  sessions      StudySession[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([planId])
+  @@index([topicId])
+  @@index([scheduledStart])
+}
+
+enum BlockType {
+  STUDY
+  QUIZ
+  REVISION
+  BREAK
+}
+
+enum BlockStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+}
+
+model StudySession {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId       String
+  topic         Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  planBlockId   String?
+  planBlock     PlanBlock? @relation(fields: [planBlockId], references: [id], onDelete: SetNull)
+
+  startedAt     DateTime @default(now())
+  endedAt       DateTime?
+  durationMins  Int?
+  energyLevel   Int?
+  notes         String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([topicId])
+  @@index([startedAt])
+}
+
+model QuizAttempt {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId       String
+  topic         Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  examId        String
+  exam          Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  questions     Json
+  score         Float
+  timeTakenSecs Int
+  attemptedAt   DateTime @default(now())
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([topicId])
+  @@index([attemptedAt])
+}
+
+model PanicEvent {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  detectedAt    DateTime @default(now())
+  panicScore    Float
+  behavioralSignals Json
+  interventionType String?
+  resolvedAt    DateTime?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([detectedAt])
+}
+
+model SpacedRepetitionQueue {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId       String
+  topic         Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  nextReviewAt  DateTime
+  intervalHours Float
+  easeFactor    Float   @default(2.5)
+  repetitionNum Int     @default(1)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, topicId])
+  @@index([nextReviewAt])
+}
+
+model Institution {
+  id            String   @id @default(cuid())
+  name          String
+  adminUserId   String
+  adminUser     User     @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  plan          InstitutionPlan @default(FREE)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([adminUserId])
+}
+
+enum InstitutionPlan {
+  FREE
+  PREMIUM
+}
+
+model Notification {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type          String
+  message       String
+  channel       NotificationChannel @default(IN_APP)
+  sentAt        DateTime @default(now())
+  readAt        DateTime?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([readAt])
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  PUSH
+}

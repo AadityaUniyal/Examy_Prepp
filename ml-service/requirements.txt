@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pydantic
+numpy
+pandas
+scikit-learn
+xgboost
+spacy
+sentence-transformers
+chromadb
+pdfplumber
+python-multipart
+requests
+google-generativeai
+joblib
+pydantic-settings
