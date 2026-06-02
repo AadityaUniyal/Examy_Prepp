@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { fetchWithAuth } from '@/lib/utils'
+import MonteCarloWidget from '@/components/MonteCarloWidget'
+import { Calendar, ShieldAlert, Sparkles, Flame, Zap, CheckCircle2, AlertCircle, ArrowRight, User } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 interface DashboardData {
   exam: {
@@ -21,13 +25,15 @@ interface DashboardData {
 
 export default function DashboardPage() {
   const { data: session } = useSession()
+  const router = useRouter()
   const [dashboard, setDashboard] = useState<DashboardData | null>(null)
+  const [notifications, setNotifications] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const response = await fetch('/api/graphql', {
+        const response = await fetchWithAuth('/api/graphql', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -37,6 +43,12 @@ export default function DashboardPage() {
                 name
                 examDate
                 totalMarks
+              }
+              myNotifications {
+                id
+                message
+                readAt
+                createdAt
               }
             }`
           })
@@ -50,12 +62,15 @@ export default function DashboardPage() {
             daysLeft: 3,
             hoursLeft: 12,
             topicsFocused: [
-              { name: 'Photosynthesis', confidence: 0.7 },
-              { name: 'Cell Division', confidence: 0.5 },
-              { name: 'Genetics', confidence: 0.3 }
+              { name: 'Photosynthesis & Light Reactions', confidence: 0.7 },
+              { name: 'Cell Division (Mitosis & Meiosis)', confidence: 0.5 },
+              { name: 'Genetics & Mandelian Inheritance', confidence: 0.3 }
             ],
             panicLevel: 'yellow'
           })
+        }
+        if (result.data?.myNotifications) {
+          setNotifications(result.data.myNotifications)
         }
       } catch (error) {
         console.error('Failed to fetch dashboard:', error)
@@ -82,124 +97,238 @@ export default function DashboardPage() {
     }
   }, [session])
 
-  const panicColors = {
-    green: 'bg-green-100 border-green-300',
-    yellow: 'bg-yellow-100 border-yellow-300',
-    red: 'bg-red-100 border-red-300'
+  const panicDetails = {
+    green: {
+      emoji: '😌',
+      label: 'Calm & Focused',
+      color: 'border-emerald-500/30 bg-emerald-500/5 text-emerald-400',
+      glow: 'shadow-emerald-500/5'
+    },
+    yellow: {
+      emoji: '😐',
+      label: 'Moderate Tension',
+      color: 'border-amber-500/30 bg-amber-500/5 text-amber-400',
+      glow: 'shadow-amber-500/5'
+    },
+    red: {
+      emoji: '😰',
+      label: 'High Stress Alert',
+      color: 'border-rose-500/30 bg-rose-500/5 text-rose-400',
+      glow: 'shadow-rose-500/5'
+    }
   }
 
   if (!dashboard) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">Loading dashboard...</p>
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <svg className="animate-spin h-10 w-10 text-indigo-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Loading Dashboard...</p>
         </div>
       </div>
     )
   }
 
+  const panicInfo = panicDetails[dashboard.panicLevel] || panicDetails.green
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">Welcome, {session?.user?.name}!</h1>
-          <p className="text-gray-600 mt-2">Let's get you exam-ready</p>
+    <div className="min-h-screen bg-transparent p-4 md:p-8 space-y-8 max-w-6xl mx-auto">
+      
+      {/* Welcome Banner */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-2">
+        <div>
+          <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-1.5">
+            <Sparkles className="w-3.5 h-3.5" /> Workspace Dashboard
+          </div>
+          <h1 className="text-4xl font-black text-white tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+            Welcome Back, {session?.user?.name || 'Student'}!
+          </h1>
+          <p className="text-slate-450 text-sm mt-1">
+            Preparing for <span className="text-white font-semibold">{dashboard.exam.name}</span>
+          </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold">{dashboard.daysLeft}</div>
-                <div className="text-sm opacity-90">Days Left</div>
-                <div className="text-3xl font-bold mt-2">{dashboard.hoursLeft}hrs</div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold">{dashboard.readinessScore}%</div>
-                <div className="text-sm opacity-90">Readiness Score</div>
-                <div className="mt-3 w-full bg-white/20 rounded-full h-2">
-                  <div
-                    className="bg-white rounded-full h-2"
-                    style={{ width: `${dashboard.readinessScore}%` }}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className={`border-2 ${panicColors[dashboard.panicLevel]}`}>
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold mb-2">
-                  {dashboard.panicLevel === 'green' ? '😌' : dashboard.panicLevel === 'yellow' ? '😐' : '😰'}
-                </div>
-                <div className="text-sm font-medium">Panic Meter</div>
-                <div className="text-xs text-gray-600 mt-1 capitalize">
-                  {dashboard.panicLevel}
-                  {dashboard.panicLevel === 'green' ? ' - Focused' : dashboard.panicLevel === 'yellow' ? ' - Moderate' : ' - High'}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/60 border border-slate-900 text-xs font-bold text-slate-400 shadow-inner">
+          <Calendar className="w-4 h-4 text-indigo-400" />
+          Exam Date: {new Date(dashboard.exam.examDate).toLocaleDateString()}
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Button className="h-14 text-lg" variant="default">Start Study</Button>
-          <Button className="h-14 text-lg" variant="outline">Take Quiz</Button>
-          <Button className="h-14 text-lg" variant="outline">View Plan</Button>
-          <Button className="h-14 text-lg" variant="outline">Re-plan</Button>
-        </div>
+      {/* Top Level Metric Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        {/* Days Left Card */}
+        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 to-sky-400"></div>
+          <CardContent className="pt-6 h-full flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Countdown</span>
+              <Flame className="w-5 h-5 text-indigo-400" />
+            </div>
+            <div className="text-left mt-2">
+              <div className="text-4xl font-black text-white tracking-tight">{dashboard.daysLeft} Days</div>
+              <p className="text-[11px] text-slate-500 mt-1 font-semibold">Approximately {dashboard.hoursLeft} hours remaining</p>
+            </div>
+          </CardContent>
+        </Card>
 
-        <Card className="mb-8">
+        {/* Readiness Score Card */}
+        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-sky-400 to-emerald-500"></div>
+          <CardContent className="pt-6 h-full flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Readiness Score</span>
+              <Zap className="w-5 h-5 text-emerald-400 animate-pulse" />
+            </div>
+            <div className="text-left mt-2">
+              <div className="text-4xl font-black text-emerald-400 tracking-tight">{dashboard.readinessScore}%</div>
+              <div className="mt-3 w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                <div
+                  className="bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full h-1.5 transition-all duration-500"
+                  style={{ width: `${dashboard.readinessScore}%` }}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Panic Meter Card */}
+        <Card className={`border ${panicInfo.color} shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between transition-all duration-300`}>
+          <CardContent className="pt-6 h-full flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Panic Protocol</span>
+              <ShieldAlert className="w-5 h-5" />
+            </div>
+            <div className="text-left mt-2">
+              <div className="text-3xl font-black text-white flex items-baseline gap-1.5 tracking-tight">
+                <span className="text-4xl">{panicInfo.emoji}</span> {panicInfo.label}
+              </div>
+              <p className="text-[10px] text-slate-500 font-semibold mt-1">Stress metric: {dashboard.panicLevel.toUpperCase()}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Action Buttons Hub */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <Button 
+          onClick={() => router.push('/planner')}
+          className="h-14 rounded-2xl bg-indigo-650 hover:bg-indigo-755 text-white font-bold text-sm transition-all active:scale-[0.98] shadow-lg shadow-indigo-500/10 flex items-center justify-center gap-2"
+        >
+          Start Study Sprint
+        </Button>
+        <Button 
+          onClick={() => router.push('/quiz')}
+          className="h-14 rounded-2xl border-slate-800 bg-slate-900/30 hover:bg-slate-800/80 text-slate-200 font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          variant="outline"
+        >
+          Adaptive Quiz
+        </Button>
+        <Button 
+          onClick={() => router.push('/flashcards')}
+          className="h-14 rounded-2xl border-slate-800 bg-slate-900/30 hover:bg-slate-800/80 text-slate-200 font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          variant="outline"
+        >
+          Spaced Flashcards
+        </Button>
+        <Button 
+          onClick={() => router.push('/mock-exam')}
+          className="h-14 rounded-2xl border-indigo-500/20 bg-indigo-950/15 hover:bg-indigo-900/25 text-indigo-400 font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-indigo-950/5"
+          variant="outline"
+        >
+          AI Mock Exam
+        </Button>
+        <Button 
+          onClick={() => router.push('/feedback')}
+          className="h-14 rounded-2xl border-slate-800 bg-slate-900/30 hover:bg-slate-800/80 text-slate-200 font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          variant="outline"
+        >
+          Feedback Support
+        </Button>
+      </div>
+
+      {/* Main Grid: Today's Focus & Notifications */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        {/* Today's Focus Card */}
+        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
           <CardHeader>
-            <CardTitle>Today's Focus</CardTitle>
-            <CardDescription>Top 3 topics to study today</CardDescription>
+            <CardTitle className="text-white font-black text-lg">Focus Priorities</CardTitle>
+            <CardDescription className="text-slate-500 text-xs">Top weightage topics requiring calibration study</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {dashboard.topicsFocused.map((topic, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div 
+                  key={idx} 
+                  className="flex items-center justify-between p-4 bg-slate-950/40 border border-slate-900/80 rounded-2xl hover:border-slate-850 hover:bg-slate-950/80 transition-all group cursor-pointer hover:scale-[1.01]"
+                  onClick={() => router.push('/planner')}
+                >
                   <div className="flex items-center gap-3">
-                    <div className="text-2xl">{idx === 0 ? '🔥' : idx === 1 ? '⚡' : '💡'}</div>
+                    <div className="h-9 w-9 rounded-xl bg-slate-900 flex items-center justify-center text-lg border border-slate-850">
+                      {idx === 0 ? '🔥' : idx === 1 ? '⚡' : '💡'}
+                    </div>
                     <div>
-                      <p className="font-medium">{topic.name}</p>
-                      <p className="text-sm text-gray-600">Confidence: {Math.round(topic.confidence * 100)}%</p>
+                      <p className="font-bold text-slate-200 text-sm">{topic.name}</p>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Calibrated Confidence: {Math.round(topic.confidence * 100)}%</p>
                     </div>
                   </div>
-                  <Button variant="ghost">Study →</Button>
+                  <Button 
+                    variant="ghost" 
+                    className="text-indigo-400 hover:text-indigo-300 hover:bg-transparent flex items-center gap-1.5 text-xs font-bold transition-transform group-hover:translate-x-1"
+                  >
+                    Study <ArrowRight className="w-3.5 h-3.5" />
+                  </Button>
                 </div>
               ))}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        {/* Alerts & Reminders */}
+        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
           <CardHeader>
-            <CardTitle>Predicted Score</CardTitle>
+            <CardTitle className="text-white font-black text-lg">System Reminders</CardTitle>
+            <CardDescription className="text-slate-500 text-xs">Real-time study block deadlines and warnings</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-green-600">75%</div>
-                <div className="text-sm text-gray-600 mt-1">Most Likely</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl text-orange-600">68% - 82%</div>
-                <div className="text-sm text-gray-600 mt-1">Confidence Range (80%)</div>
-              </div>
-              <div className="text-center">
-                <div className="text-sm text-green-600 font-medium">↑ Improving</div>
-                <div className="text-sm text-gray-600 mt-1">+5% from yesterday</div>
-              </div>
+            <div className="space-y-3.5 max-h-[260px] overflow-y-auto pr-1">
+              {notifications.length === 0 ? (
+                <div className="text-center py-8">
+                  <CheckCircle2 className="w-8 h-8 text-slate-700 mx-auto mb-2" />
+                  <p className="text-xs text-slate-500 italic">No alerts. Your preparation is perfectly aligned!</p>
+                </div>
+              ) : (
+                notifications.slice(0, 4).map((n, idx) => (
+                  <div key={idx} className="p-4 bg-slate-950/40 border border-slate-900/85 rounded-2xl flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-lg bg-indigo-500/5 border border-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0">
+                        <AlertCircle className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-slate-300">{n.message}</p>
+                        <span className="text-[9px] font-bold text-slate-500 block mt-1 uppercase tracking-wider">
+                          {new Date(n.createdAt).toLocaleTimeString()}
+                        </span>
+                      </div>
+                    </div>
+                    {!n.readAt && (
+                      <span className="h-2 w-2 bg-indigo-500 rounded-full shrink-0 ml-3 animate-ping"></span>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Monte Carlo Simulator integration */}
+      <MonteCarloWidget examId={dashboard.exam.id} />
     </div>
   )
 }

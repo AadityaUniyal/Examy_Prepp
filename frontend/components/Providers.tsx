@@ -6,6 +6,7 @@ import { ApolloProvider } from '@apollo/client'
 import { client } from '@/lib/apollo-client'
 import { Toaster } from '@/components/ui/toast'
 import PanicModeModal from '@/components/PanicModeModal'
+import { AuthSync } from './AuthSync'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [isPanicOpen, setIsPanicOpen] = React.useState(false)
@@ -23,6 +24,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <ApolloProvider client={client}>
+        <AuthSync />
         {children}
         <Toaster />
         <PanicModeModal open={isPanicOpen} onClose={() => setIsPanicOpen(false)} />

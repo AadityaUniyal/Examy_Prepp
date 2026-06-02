@@ -1,4 +1,4 @@
-import { prisma } from '../index.js';
+import { prisma } from '../prisma.js';
 import { requireAuth } from '../middleware/auth.js';
 import { predictScore as mlPredictScore } from '../services/mlService.js';
 
@@ -6,6 +6,31 @@ export default {
   me: async (_, __, { userId }) => {
     requireAuth(userId);
     return prisma.user.findUnique({ where: { id: userId } });
+  },
+  user: async (_, { id, email }, { userId }) => {
+    requireAuth(userId);
+    
+    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!currentUser) throw new Error('Unauthorized');
+
+    // Allow Aaditya (admin/dev email) to search/reclarify any user connection
+    const isDeveloper = currentUser.email === 'aadityacheeks@gmail.com' || currentUser.role === 'ADMIN';
+
+    if (email) {
+      if (currentUser.email !== email && !isDeveloper) {
+        throw new Error('Access denied. You can only inspect your own details.');
+      }
+      return prisma.user.findUnique({ where: { email } });
+    }
+
+    if (id) {
+      if (userId !== id && !isDeveloper) {
+        throw new Error('Access denied. You can only inspect your own details.');
+      }
+      return prisma.user.findUnique({ where: { id } });
+    }
+
+    return null;
   },
   exam: async (_, { id }, { userId }) => {
     requireAuth(userId);
@@ -53,8 +78,40 @@ export default {
       include: { topic: true }
     });
 
+    const quizAttempts = await prisma.quizAttempt.findMany({
+      where: { userId, examId }
+    });
+
+    const studySessions = await prisma.studySession.findMany({
+      where: { userId, topic: { examId } }
+    });
+
+    const activePlan = await prisma.studyPlan.findFirst({
+      where: { userId, examId, isActive: true }
+    });
+
+    const exam = await prisma.exam.findUnique({
+      where: { id: examId },
+      include: { topics: true }
+    });
+
+    const confidenceScores = confidences.map(c => c.calibratedScore);
+    const quizScores = quizAttempts.map(q => q.score);
+    const studyHoursCompleted = studySessions.reduce((sum, s) => sum + (s.durationMins || 0) / 60, 0);
+    const totalStudyHoursPlanned = activePlan ? activePlan.totalHours : 0;
+    const now = new Date();
+    const daysUntilExam = exam ? Math.max(1, Math.ceil((new Date(exam.examDate).getTime() - now.getTime()) / (1000 * 3600 * 24))) : 5;
+
     // Delegate prediction to ML service
-    const predictionResult = await mlPredictScore({ confidences });
+    const predictionResult = await mlPredictScore({
+      confidenceScores,
+      quizScores,
+      studyHoursCompleted,
+      totalStudyHoursPlanned,
+      daysUntilExam,
+      topicCount: exam ? exam.topics.length : 1
+    });
+
     return {
       lowScore: predictionResult.lowScore,
       highScore: predictionResult.highScore,
@@ -260,6 +317,180 @@ export default {
       averageEnergy,
       topicBreakdown,
       weeklyHours: [2.5, 4.0, 1.5, 5.0, 3.0, 4.5, totalStudyHours]
+    };
+  },
+  myNotifications: async (_, __, { userId }) => {
+    requireAuth(userId);
+    return prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' }
+    });
+  },
+  myFlashcards: async (_, { topicId }, { userId }) => {
+    requireAuth(userId);
+    return prisma.flashcard.findMany({
+      where: { topicId, topic: { exam: { userId } } },
+      orderBy: { createdAt: 'asc' }
+    });
+  },
+  monteCarloSimulation: async (_, { examId }, { userId }) => {
+    requireAuth(userId);
+    
+    const exam = await prisma.exam.findUnique({
+      where: { id: examId, userId },
+      include: { topics: true }
+    });
+    if (!exam) throw new Error('Exam not found');
+
+    const confidences = await prisma.topicConfidence.findMany({
+      where: { userId, topic: { examId } }
+    });
+    const confMap = new Map(confidences.map(c => [c.topicId, c.calibratedScore]));
+
+    const quizAttempts = await prisma.quizAttempt.findMany({
+      where: { userId, examId }
+    });
+    const avgQuizScore = quizAttempts.length > 0 ? quizAttempts.reduce((sum, q) => sum + q.score, 0) / quizAttempts.length : 70.0;
+
+    const studySessions = await prisma.studySession.findMany({
+      where: { userId, topic: { examId }, endedAt: { not: null } }
+    });
+    const studyHoursCompleted = studySessions.reduce((sum, s) => sum + (s.durationMins || 0) / 60, 0);
+
+    const activePlan = await prisma.studyPlan.findFirst({
+      where: { userId, examId, isActive: true }
+    });
+    const totalStudyHoursPlanned = activePlan ? activePlan.totalHours : 48.0;
+    const studyCompletion = totalStudyHoursPlanned > 0 ? Math.min(1.0, studyHoursCompleted / totalStudyHoursPlanned) : 1.0;
+
+    let avgConfidence = 0.5;
+    if (exam.topics.length > 0) {
+      let sumConf = 0;
+      for (const t of exam.topics) {
+        sumConf += confMap.has(t.id) ? confMap.get(t.id) : 0.5;
+      }
+      avgConfidence = sumConf / exam.topics.length;
+    }
+
+    const baseScore = (avgConfidence * 0.4 + (avgQuizScore / 100) * 0.4 + studyCompletion * 0.2) * 100;
+
+    const trials = 10000;
+    let scoreSum = 0;
+    let countAbove75 = 0;
+    let countAbove90 = 0;
+    
+    const bins = {
+      'Under 50%': 0,
+      '50-60%': 0,
+      '60-70%': 0,
+      '70-80%': 0,
+      '80-90%': 0,
+      '90-100%': 0
+    };
+
+    const gaussianRandom = () => {
+      let u = 0, v = 0;
+      while(u === 0) u = Math.random(); 
+      while(v === 0) v = Math.random();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    };
+
+    for (let i = 0; i < trials; i++) {
+      const noise = gaussianRandom() * 7.5;
+      let simulatedScore = baseScore + noise;
+      simulatedScore = Math.max(0, Math.min(100, simulatedScore));
+
+      scoreSum += simulatedScore;
+      if (simulatedScore >= 75) countAbove75++;
+      if (simulatedScore >= 90) countAbove90++;
+
+      if (simulatedScore < 50) bins['Under 50%']++;
+      else if (simulatedScore < 60) bins['50-60%']++;
+      else if (simulatedScore < 70) bins['60-70%']++;
+      else if (simulatedScore < 80) bins['70-80%']++;
+      else if (simulatedScore < 90) bins['80-90%']++;
+      else bins['90-100%']++;
+    }
+
+    const averageScore = scoreSum / trials;
+    const probabilityAbove75 = (countAbove75 / trials) * 100;
+    const probabilityAbove90 = (countAbove90 / trials) * 100;
+
+    const distribution = Object.entries(bins).map(([scoreRange, count]) => ({
+      scoreRange,
+      percentage: (count / trials) * 100
+    }));
+
+    let recommendation = 'Your prep is balanced. Keep executing your blocks!';
+    if (averageScore < 60) {
+      recommendation = '⚠️ Focus: Critical gaps detected. Take high-weightage quizzes to quickly calibrate and boost core topics.';
+    } else if (probabilityAbove75 > 80 && probabilityAbove90 < 20) {
+      recommendation = '👍 Good Shape: You have a high chance of passing. Focus on your medium-confidence topics to break into the 90%+ range!';
+    } else if (probabilityAbove90 > 50) {
+      recommendation = '🔥 Excellent! Prepare for minor revisions, rest well, and maintain your streak. You are fully calibrated.';
+    }
+
+    return {
+      trials,
+      averageScore,
+      probabilityAbove75,
+      probabilityAbove90,
+      distribution,
+      recommendation
+    };
+  },
+  flashcardStats: async (_, { examId }, { userId }) => {
+    requireAuth(userId);
+
+    const exam = await prisma.exam.findUnique({
+      where: { id: examId, userId },
+      include: { topics: { include: { flashcards: true } } }
+    });
+    if (!exam) throw new Error('Exam not found');
+
+    const topics = exam.topics;
+    const totalCards = topics.reduce((sum, t) => sum + t.flashcards.length, 0);
+
+    const queueItems = await prisma.spacedRepetitionQueue.findMany({
+      where: { userId, topicId: { in: topics.map(t => t.id) } }
+    });
+
+    const queueMap = new Map(queueItems.map(q => [q.topicId, q]));
+
+    let masteredTopics = 0;
+    let learningTopics = 0;
+    let notStartedTopics = 0;
+    let totalEaseFactor = 0;
+    let overdueCount = 0;
+
+    const now = new Date();
+
+    for (const t of topics) {
+      const q = queueMap.get(t.id);
+      if (!q) {
+        notStartedTopics += 1;
+      } else {
+        totalEaseFactor += q.easeFactor;
+        if (new Date(q.nextReviewAt) < now) {
+          overdueCount += 1;
+        }
+        if (q.intervalHours > 24) {
+          masteredTopics += 1;
+        } else {
+          learningTopics += 1;
+        }
+      }
+    }
+
+    const averageEaseFactor = queueItems.length > 0 ? (totalEaseFactor / queueItems.length) : 2.5;
+
+    return {
+      totalCards,
+      masteredTopics,
+      learningTopics,
+      notStartedTopics,
+      averageEaseFactor,
+      overdueCount
     };
   }
 };

@@ -7,7 +7,8 @@
     "build": "echo 'Backend built'",
     "start": "node src/index.js",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "test": "node src/resolvers/resolvers.test.js"
   },
   "dependencies": {
     "express": "^4.18.0",

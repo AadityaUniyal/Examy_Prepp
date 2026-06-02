@@ -10,6 +10,9 @@ const handler = NextAuth({
   ],
   callbacks: {
     async session({ session, token }) {
+      if (session?.user && token) {
+        (session as any).providerAccountId = token.sub
+      }
       return session
     },
     async jwt({ token, account }) {

@@ -1,0 +1,2 @@
+id,userId,topicId,confidenceBefore,confidenceAfter,sessionCompleted,timeSpentMins,scheduledMins,energyRating,examScore,createdAt
+mock-event-1,mock-user,mock-topic,5.0,8.0,True,120,120,4,85.0,2026-06-01T00:00:00Z

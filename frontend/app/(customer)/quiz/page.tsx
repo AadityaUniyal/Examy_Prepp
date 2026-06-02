@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import QuizEngine, { Question } from '@/components/QuizEngine'
+import { fetchWithAuth } from '@/lib/utils'
 
 export default function QuizPage() {
   const { data: session } = useSession()
@@ -48,7 +49,7 @@ export default function QuizPage() {
     setLoading(true)
     try {
       if (topic) {
-        await fetch('/api/graphql', {
+        await fetchWithAuth('/api/graphql', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -73,20 +74,32 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="flex justify-between items-center mb-4">
+    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 relative overflow-hidden">
+      {/* Visual background glows */}
+      <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none"></div>
+
+      <div className="max-w-4xl mx-auto space-y-8 relative z-10">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/50 pb-6">
           <div>
-            <h1 className="text-3xl font-extrabold text-indigo-900 tracking-tight">Adaptive Quiz</h1>
-            <p className="text-slate-600 mt-1">Calibrating your confidence level using active recall</p>
+            <h1 className="text-3xl font-black bg-gradient-to-b from-white to-slate-300 bg-clip-text text-transparent tracking-tight">
+              Adaptive Assessment
+            </h1>
+            <p className="text-slate-400 text-sm mt-1">Calibrating topic mastery scores in real-time</p>
           </div>
-          <Button variant="outline" onClick={() => router.push('/dashboard')}>
+          <Button 
+            variant="outline" 
+            onClick={() => router.push('/dashboard')}
+            className="border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 rounded-xl"
+          >
             Dashboard
           </Button>
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-slate-500">Loading quiz content...</div>
+          <div className="text-center py-20 text-slate-500 animate-pulse font-bold tracking-widest text-xs uppercase">
+            Preparing active-recall questions...
+          </div>
         ) : (
           topic && (
             <QuizEngine

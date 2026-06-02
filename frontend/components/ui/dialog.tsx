@@ -25,8 +25,8 @@ export function DialogContent({ children, className = '' }: { children: React.Re
   return <div className={`space-y-4 ${className}`}>{children}</div>
 }
 
-export function DialogHeader({ children }: { children: React.ReactNode }) {
-  return <div className="space-y-1.5 text-left">{children}</div>
+export function DialogHeader({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={`space-y-1.5 text-left ${className}`}>{children}</div>
 }
 
 export function DialogTitle({ children, className = '' }: { children: React.ReactNode; className?: string }) {

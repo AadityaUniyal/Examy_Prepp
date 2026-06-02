@@ -10,16 +10,20 @@ ExamEve is designed as a distributed multi-service platform:
 
 ```mermaid
 graph TD
-    Client[Next.js Client] <-->|GraphQL & WebSockets| API[Apollo Express Server]
-    API <-->|Prisma ORM| DB[(PostgreSQL Database)]
-    API <-->|REST API| ML[FastAPI ML Microservice]
-    Client <-->|WebSockets| SocketHandler[Socket.io Room Manager]
+    Client[Next.js Client] -->|GraphQL & WebSockets| API[Apollo Express Server]
+    API -->|GraphQL & WebSockets| Client
+    API -->|Prisma ORM| DB[(PostgreSQL Database)]
+    API -->|REST API| ML[FastAPI ML Microservice]
+    ML --> API
+    Client -->|WebSockets| SocketHandler[Socket.io Room Manager]
+    SocketHandler --> Client
 ```
 
 ### Core Services
-1. **Frontend (`/frontend`)**: Next.js 14 Web Portal styled with clean dark-mode custom CSS, animated glassmorphic dashboards, interactive Recharts visualizations (Area, Pie, Radar charts), and responsive navigation layout.
+1. **Frontend (`/frontend`)**: Next.js 14 Web Portal styled with clean dark-mode custom CSS, animated glassmorphic dashboards, interactive Recharts visualizations (Area, Pie, Radar charts), and responsive navigation layout. Bridged with backend through NextAuth Google Sign-In and GraphQL JWT synchronization context.
 2. **Backend Gateway (`/backend`)**: Modular Node.js Express server running Apollo Server (GraphQL). Features JWT signature verification context parser, structured database relations managed with Prisma, and interactive real-time Socket.io signaling.
 3. **Machine Learning Service (`/ml-service`)**: Python Uvicorn engine running FastAPI. Handles confidence calibration models, behavioral panic signal analyzers, score prediction bands, and optimal topic prioritization pipelines.
+4. **Redis Cache & Session Store**: Redis acts as a real-time message broker and pub-sub backend adapter for Socket.io room management, keeping WebSocket instances in sync across nodes, and caches GraphQL execution states.
 
 ---
 
@@ -74,6 +78,17 @@ cd Examy_Prepp/exameve
 # Launch all containers
 docker-compose up --build
 ```
+
+### Google OAuth Configuration Setup
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a new Project and navigate to **APIs & Services** > **Credentials**.
+3. Create an **OAuth 2.0 Client ID** credential:
+   - Application type: Web application
+   - Authorized JavaScript origins: `http://localhost:3000`
+   - Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
+4. Copy the generated **Client ID** and **Client Secret**.
+5. Create `.env` files in `frontend`, `backend`, and `ml-service` based on `.env.example` templates, and populate `NEXT_PUBLIC_GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` variables respectively.
+
 
 ### Manual Development Setup
 

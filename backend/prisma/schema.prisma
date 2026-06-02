@@ -23,6 +23,7 @@ model User {
   spacedRepQueue SpacedRepetitionQueue[]
   notifications Notification[]
   institutions  Institution[]
+  mlEvents      MLEvent[]
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -45,6 +46,7 @@ model Exam {
   examDate      DateTime
   board         String
   totalMarks    Int?
+  finalScore    Float?
 
   syllabus      Syllabus?
   topics        Topic[]
@@ -99,6 +101,8 @@ model Topic {
   quizAttempts  QuizAttempt[]
   planBlocks    PlanBlock[]
   spacedRepQueue SpacedRepetitionQueue[]
+  flashcards    Flashcard[]
+  mlEvents      MLEvent[]
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -316,4 +320,35 @@ enum NotificationChannel {
   IN_APP
   EMAIL
   PUSH
+}
+
+model Flashcard {
+  id        String   @id @default(cuid())
+  topicId   String
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  question  String
+  answer  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([topicId])
+}
+
+model MLEvent {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId          String?
+  topic            Topic?   @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  confidenceBefore Float?
+  confidenceAfter  Float?
+  sessionCompleted Boolean?
+  timeSpentMins    Int?
+  scheduledMins    Int?
+  energyRating     Int?
+  examScore        Float?
+  createdAt        DateTime @default(now())
+
+  @@index([userId])
+  @@index([topicId])
 }

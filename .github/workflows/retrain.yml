@@ -1,0 +1,70 @@
+name: Nightly ML Retrain
+
+on:
+  schedule:
+    - cron: '30 20 * * *'  # 2am IST = 8:30pm UTC
+  workflow_dispatch:      # Allow manual triggering for testing
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@39eb614f43b40d90d13e478f396706de0f06e9b7 # v4.0.3
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './backend/package-lock.json'
+
+      - name: Install and Start Backend Service
+        working-directory: ./backend
+        run: |
+          npm ci
+          npx prisma generate
+          # Start backend server locally in the background
+          NODE_ENV=production JWT_SECRET=nightly-retrain-secret-key-123456 PORT=4000 DATABASE_URL="${{ secrets.DATABASE_URL }}" npm start &
+          
+          # Wait for backend server to be healthy
+          echo "Waiting for backend server to start..."
+          timeout=30
+          while ! curl -s http://localhost:4000/health > /dev/null; do
+            sleep 1
+            timeout=$((timeout - 1))
+            if [ $timeout -eq 0 ]; then
+              echo "Backend failed to start"
+              exit 1
+            fi
+          done
+          echo "Backend service is up and healthy!"
+
+      - uses: actions/setup-python@82c7e60772d490a75db006ffee7fc5db71d692b1 # v5.1.0
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: './ml-service/requirements.txt'
+
+      - name: Install ML service dependencies
+        working-directory: ./ml-service
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Telemetry Label Generation
+        working-directory: ./ml-service
+        run: |
+          python jobs/label_generator.py
+        env:
+          BACKEND_URL: http://localhost:4000
+          ML_INTERNAL_TOKEN: dev_internal_token
+
+      - name: Run XGBoost Model Retraining & Validation
+        working-directory: ./ml-service
+        run: |
+          python jobs/retrain.py
+
+      - name: Commit and Push Updated ML Models
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add ml-service/app/models/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(ml): nightly auto-retrained XGBoost models [skip ci]" && git push)

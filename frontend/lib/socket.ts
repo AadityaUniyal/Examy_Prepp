@@ -8,6 +8,8 @@ export const socket = io(SOCKET_URL, {
 
 export function connectSocket() {
   if (!socket.connected) {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('exameve_token') : null
+    socket.auth = { token }
     socket.connect()
   }
 }

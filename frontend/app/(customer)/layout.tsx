@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
-import { LayoutDashboard, Calendar, TestTube, Wind, BarChart3, LogOut, ShieldAlert, Settings } from 'lucide-react'
+import { LayoutDashboard, Calendar, TestTube, Wind, BarChart3, LogOut, ShieldAlert, Settings, MessageSquare, Layers } from 'lucide-react'
 
 export default function CustomerLayout({
   children,
@@ -20,6 +20,8 @@ export default function CustomerLayout({
     { name: 'Adaptive Quiz', href: '/quiz', icon: TestTube },
     { name: 'Pre-Exam Mode', href: '/pre-exam', icon: Wind },
     { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+    { name: 'Spaced Flashcards', href: '/flashcards', icon: Layers },
+    { name: 'Feedback', href: '/feedback', icon: MessageSquare },
   ]
 
   return (
