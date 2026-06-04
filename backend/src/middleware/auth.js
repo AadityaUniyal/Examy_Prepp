@@ -20,20 +20,12 @@ export function getAuthContext(req) {
         return { userId: decoded.userId || decoded.sub || decoded.id };
       } catch (err) {
         // Token verification failed
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('[Auth] JWT verification failed, using dev fallback:', err.message);
-          return { userId: 'mock-student-123' };
-        }
         return { userId: null };
       }
     }
   }
 
   // No auth header provided
-  if (process.env.NODE_ENV === 'development') {
-    return { userId: 'mock-student-123' };
-  }
-
   return { userId: null };
 }
 

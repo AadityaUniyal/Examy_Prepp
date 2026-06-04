@@ -197,7 +197,7 @@ export default function MockExamPage() {
             <h1 className="text-4xl font-black text-white tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
               AI Mock Exam
             </h1>
-            <p className="text-slate-450 text-sm mt-1">
+            <p className="text-slate-400 text-sm mt-1">
               Personalized mock exams targeting weakest syllabus subjects to feed model calibration loops.
             </p>
           </div>
@@ -224,7 +224,7 @@ export default function MockExamPage() {
             <Button
               onClick={handleStartExam}
               disabled={loading || !examId}
-              className="bg-indigo-650 hover:bg-indigo-700 text-white font-bold h-12 px-8 rounded-xl transition-all shadow-lg shadow-indigo-500/10 flex items-center gap-2 mx-auto"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold h-12 px-8 rounded-xl transition-all shadow-lg shadow-indigo-500/10 flex items-center gap-2 mx-auto"
             >
               {loading ? (
                 <>
@@ -251,7 +251,7 @@ export default function MockExamPage() {
               <div className="flex items-center gap-2 font-bold text-slate-350 text-xs">
                 <span>Subject Assessment (5 Questions)</span>
               </div>
-              <div className="flex items-center gap-2 bg-slate-950/80 px-4 py-1.5 border border-slate-850 rounded-xl font-bold text-xs">
+              <div className="flex items-center gap-2 bg-slate-950/80 px-4 py-1.5 border border-slate-800 rounded-xl font-bold text-xs">
                 <Timer className={`w-4 h-4 ${timeLeft < 60 ? 'text-rose-400 animate-pulse' : 'text-indigo-400'}`} />
                 <span className={timeLeft < 60 ? 'text-rose-450' : 'text-slate-300'}>
                   Time Remaining: {formatTimer(timeLeft)}
@@ -276,8 +276,8 @@ export default function MockExamPage() {
                           onClick={() => handleSelectOption(qIdx, oIdx)}
                           className={`p-4 rounded-xl border text-xs cursor-pointer select-none transition-all ${
                             isSelected
-                              ? 'bg-indigo-650/15 border-indigo-500 text-indigo-300 font-bold'
-                              : 'bg-slate-950/40 border-slate-850 text-slate-450 hover:bg-slate-950/80 hover:text-slate-200'
+                              ? 'bg-indigo-600/15 border-indigo-500 text-indigo-300 font-bold'
+                              : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:bg-slate-950/80 hover:text-slate-200'
                           }`}
                         >
                           <span className="mr-2 font-black uppercase text-indigo-400">{String.fromCharCode(65 + oIdx)}.</span>
@@ -299,14 +299,14 @@ export default function MockExamPage() {
                     setExamStarted(false)
                   }
                 }}
-                className="text-slate-450 hover:text-slate-200"
+                className="text-slate-400 hover:text-slate-200"
               >
                 Quit Assessment
               </Button>
               <Button
                 onClick={handleSubmitExam}
                 disabled={grading}
-                className="bg-indigo-650 hover:bg-indigo-700 text-white font-bold h-11 px-6 rounded-xl transition-all shadow-lg shadow-indigo-500/10"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold h-11 px-6 rounded-xl transition-all shadow-lg shadow-indigo-500/10"
               >
                 {grading ? 'Grading answers...' : 'Submit Answers'}
               </Button>
@@ -328,7 +328,7 @@ export default function MockExamPage() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-black text-white">Assessment Graded!</h2>
                 <div className={`text-4xl font-black ${
-                  gradeResult.score >= 70 ? 'text-emerald-450' : 'text-indigo-400'
+                  gradeResult.score >= 70 ? 'text-emerald-400' : 'text-indigo-400'
                 }`}>
                   {gradeResult.score.toFixed(0)}% Score
                 </div>
@@ -344,7 +344,7 @@ export default function MockExamPage() {
               <div className="flex justify-center gap-3.5 pt-4">
                 <Button
                   onClick={handleStartExam}
-                  className="bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-xl h-11 px-6"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl h-11 px-6"
                 >
                   Retake New Mock
                 </Button>

@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import axios from 'axios';
 
 /**
  * Sends user feedback as an email to aadityacheeks@gmail.com
@@ -83,5 +84,57 @@ export async function sendFeedbackEmail({ userEmail, userName, rating, feedbackT
   } catch (err) {
     console.error('[EmailService] Error occurred during email dispatch:', err.message);
     throw new Error('Failed to send feedback email: ' + err.message);
+  }
+}
+
+export async function sendStudyBlockReminder({ userEmail, userName, topicName, scheduledTime }) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  console.log(`[EmailService] Attempting to send study block reminder to ${userEmail} for topic "${topicName}" starting at ${scheduledTime}...`);
+
+  if (!resendApiKey || resendApiKey === 'your_resend_api_key_here') {
+    console.warn('[EmailService] RESEND_API_KEY not configured or is placeholder. Falling back to mock console logger.');
+    console.log('====== RESEND EMAIL MOCK START ======');
+    console.log(`To: ${userEmail}`);
+    console.log(`Subject: ExamEve Reminder: "${topicName}" Study Block starting soon!`);
+    console.log(`Body: Hi ${userName}, your study block for "${topicName}" starts at ${scheduledTime} (in 10 minutes).`);
+    console.log('====== RESEND EMAIL MOCK END ======');
+    return { id: 'mock-resend-id-123' };
+  }
+
+  try {
+    const response = await axios.post(
+      'https://api.resend.com/emails',
+      {
+        from: 'ExamEve Reminders <onboarding@resend.dev>',
+        to: userEmail,
+        subject: `ExamEve Reminder: "${topicName}" Study Block starts in 10 minutes!`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #f8fafc; color: #1e293b;">
+            <h2 style="color: #3875fa; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 0;">Study Block Starting Soon!</h2>
+            <p>Hi <strong>${userName}</strong>,</p>
+            <p>This is a friendly reminder that your scheduled study block for <strong>"${topicName}"</strong> is starting at <strong>${new Date(scheduledTime).toLocaleTimeString()}</strong> (in 10 minutes).</p>
+            <p>Get ready, eliminate distractions, and maximize your focus time!</p>
+            <footer style="margin-top: 25px; font-size: 11px; color: #64748b; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+              Sent via ExamEve Reminder System • ${new Date().toLocaleString()}
+            </footer>
+          </div>
+        `
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${resendApiKey}`
+        }
+      }
+    );
+
+    const data = response.data;
+    console.log(`[EmailService] Resend study block reminder sent successfully! ID: ${data.id}`);
+    return data;
+  } catch (err) {
+    const errMsg = err.response?.data?.message || err.message;
+    console.error('[EmailService] Failed to send study block reminder via Resend:', errMsg);
+    throw new Error('Failed to send study block reminder via Resend: ' + errMsg);
   }
 }

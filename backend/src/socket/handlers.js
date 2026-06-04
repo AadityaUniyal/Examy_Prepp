@@ -28,26 +28,18 @@ export function setupSocketHandlers(io) {
       }
     }
 
-    // Dev mode fallback
-    if (!userId && process.env.NODE_ENV === 'development') {
-      userId = socket.handshake.auth?.userId || socket.handshake.query?.userId || 'mock-student-123';
-      console.log(`[Socket Auth] Using development fallback userId: ${userId}`);
-    }
-
     if (userId) {
-      socket.join(userId);
-      console.log(`[Socket] User ${socket.id} authorized & joined room: ${userId}`);
+      socket.join(`user:${userId}`);
+      console.log(`[Socket] User ${socket.id} authorized & joined room: user:${userId}`);
     } else {
-      console.warn(`[Socket] Unauthorized socket connection rejected for socket id: ${socket.id}`);
-      socket.disconnect();
-      return;
+      console.log(`[Socket] Public connection allowed for socket id: ${socket.id}`);
     }
 
     // Handle study session start
     socket.on('start-session', (data) => {
       const targetRoom = data.userId || userId;
       if (targetRoom) {
-        io.to(targetRoom).emit('session-started', {
+        io.to(`user:${targetRoom}`).emit('session-started', {
           ...data,
           startedAt: new Date().toISOString(),
         });
@@ -72,7 +64,7 @@ export function setupSocketHandlers(io) {
 
         // Create PanicEvent row in DB
         const roomUserId = data.userId || userId;
-        if (roomUserId && roomUserId !== 'mock-student-123') {
+        if (roomUserId) {
           await prisma.panicEvent.create({
             data: {
               userId: roomUserId,
@@ -84,7 +76,7 @@ export function setupSocketHandlers(io) {
         }
 
         if (targetRoom) {
-          io.to(targetRoom).emit('panic-mode-activated', payload);
+          io.to(`user:${targetRoom}`).emit('panic-mode-activated', payload);
         } else {
           socket.emit('panic-mode-activated', payload);
         }
@@ -105,7 +97,7 @@ export function setupSocketHandlers(io) {
         const targetRoom = data.userId || userId;
         const roomUserId = data.userId || userId;
 
-        if (roomUserId && roomUserId !== 'mock-student-123') {
+        if (roomUserId) {
           const unresolved = await prisma.panicEvent.findFirst({
             where: {
               userId: roomUserId,
@@ -124,7 +116,7 @@ export function setupSocketHandlers(io) {
         }
 
         if (targetRoom) {
-          io.to(targetRoom).emit('panic-recovery-confirmed', {
+          io.to(`user:${targetRoom}`).emit('panic-recovery-confirmed', {
             userId: roomUserId,
             resolvedAt: new Date().toISOString()
           });
@@ -138,7 +130,7 @@ export function setupSocketHandlers(io) {
     socket.on('session-progress', (data) => {
       const targetRoom = data.userId || userId;
       if (targetRoom) {
-        io.to(targetRoom).emit('progress-updated', data);
+        io.to(`user:${targetRoom}`).emit('progress-updated', data);
       }
     });
 

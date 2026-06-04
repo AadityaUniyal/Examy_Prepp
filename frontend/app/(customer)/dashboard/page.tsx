@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { fetchWithAuth } from '@/lib/utils'
 import MonteCarloWidget from '@/components/MonteCarloWidget'
+import PYQNotesWidget from '@/components/PYQNotesWidget'
 import { Calendar, ShieldAlert, Sparkles, Flame, Zap, CheckCircle2, AlertCircle, ArrowRight, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -146,7 +147,7 @@ export default function DashboardPage() {
           <h1 className="text-4xl font-black text-white tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
             Welcome Back, {session?.user?.name || 'Student'}!
           </h1>
-          <p className="text-slate-450 text-sm mt-1">
+          <p className="text-slate-400 text-sm mt-1">
             Preparing for <span className="text-white font-semibold">{dashboard.exam.name}</span>
           </p>
         </div>
@@ -157,7 +158,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Top Level Metric Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         
         {/* Days Left Card */}
         <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between">
@@ -209,13 +210,32 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Study Streak Card */}
+        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between group hover:scale-[1.01] transition-transform">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-500 to-rose-500 animate-pulse"></div>
+          <CardContent className="pt-6 h-full flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Consistency Streak</span>
+              <span className="text-xl animate-bounce">🔥</span>
+            </div>
+            <div className="text-left mt-2">
+              <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 tracking-tight">
+                5 Days
+              </div>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-1">
+                Autopilot Alignment: ACTIVE
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Action Buttons Hub */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Button 
           onClick={() => router.push('/planner')}
-          className="h-14 rounded-2xl bg-indigo-650 hover:bg-indigo-755 text-white font-bold text-sm transition-all active:scale-[0.98] shadow-lg shadow-indigo-500/10 flex items-center justify-center gap-2"
+          className="h-14 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition-all active:scale-[0.98] shadow-lg shadow-indigo-500/10 flex items-center justify-center gap-2"
         >
           Start Study Sprint
         </Button>
@@ -264,11 +284,11 @@ export default function DashboardPage() {
               {dashboard.topicsFocused.map((topic, idx) => (
                 <div 
                   key={idx} 
-                  className="flex items-center justify-between p-4 bg-slate-950/40 border border-slate-900/80 rounded-2xl hover:border-slate-850 hover:bg-slate-950/80 transition-all group cursor-pointer hover:scale-[1.01]"
+                  className="flex items-center justify-between p-4 bg-slate-950/40 border border-slate-900/80 rounded-2xl hover:border-slate-800 hover:bg-slate-950/80 transition-all group cursor-pointer hover:scale-[1.01]"
                   onClick={() => router.push('/planner')}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-xl bg-slate-900 flex items-center justify-center text-lg border border-slate-850">
+                    <div className="h-9 w-9 rounded-xl bg-slate-900 flex items-center justify-center text-lg border border-slate-800">
                       {idx === 0 ? '🔥' : idx === 1 ? '⚡' : '💡'}
                     </div>
                     <div>
@@ -329,6 +349,9 @@ export default function DashboardPage() {
 
       {/* Monte Carlo Simulator integration */}
       <MonteCarloWidget examId={dashboard.exam.id} />
+
+      {/* RAG and PYQ Search Solvers */}
+      <PYQNotesWidget examId={dashboard.exam.id} topics={dashboard.topicsFocused} />
     </div>
   )
 }

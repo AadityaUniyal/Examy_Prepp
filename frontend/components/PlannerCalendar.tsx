@@ -102,7 +102,7 @@ export default function PlannerCalendar({
             <h3 className="text-sm font-extrabold uppercase tracking-widest text-slate-200">
               {dayLabel}
             </h3>
-            <span className="text-[10px] font-bold bg-slate-900 text-slate-550 px-2 py-0.5 rounded-lg border border-slate-850">
+            <span className="text-[10px] font-bold bg-slate-900 text-slate-500 px-2 py-0.5 rounded-lg border border-slate-800">
               {blocks.length} blocks scheduled
             </span>
           </div>
@@ -155,7 +155,7 @@ export default function PlannerCalendar({
                           {block.blockType === 'STUDY' && (
                             <Button
                               size="sm"
-                              className="bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-lg h-7.5 px-3 flex items-center gap-1 text-[10px] transition-transform active:scale-[0.98]"
+                              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg h-7.5 px-3 flex items-center gap-1 text-[10px] transition-transform active:scale-[0.98]"
                               onClick={() => onStartBlock(block)}
                             >
                               <Play className="w-3 h-3 fill-current" /> Start

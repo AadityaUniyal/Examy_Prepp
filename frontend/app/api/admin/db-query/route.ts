@@ -96,6 +96,31 @@ export async function POST(request: Request) {
       })
     }
 
+    if (action === 'add_event') {
+      const { title, description, eventDate, type } = payload
+      if (!title || !description || !eventDate) {
+        return NextResponse.json({ success: false, error: 'Title, description, and event date are required.' }, { status: 400 })
+      }
+      const insertQuery = `
+        INSERT INTO "SystemEvent" (id, title, description, "eventDate", type, "createdAt")
+        VALUES (
+          'event-' || substring(md5(random()::text) from 1 for 12),
+          $1,
+          $2,
+          $3::timestamp,
+          $4,
+          NOW()
+        )
+      `
+      await pool.query(insertQuery, [title, description, new Date(eventDate), type || 'GENERAL'])
+      return NextResponse.json({ success: true, message: 'System event successfully registered.' })
+    }
+
+    if (action === 'get_events') {
+      const eventsRes = await pool.query('SELECT * FROM "SystemEvent" ORDER BY "eventDate" ASC LIMIT 10')
+      return NextResponse.json({ success: true, events: eventsRes.rows })
+    }
+
     return NextResponse.json({ success: false, error: 'Unknown admin action.' }, { status: 400 })
   } catch (err: any) {
     console.error('[Admin DB API] Error:', err)

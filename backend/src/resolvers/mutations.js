@@ -1,11 +1,95 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 import { prisma } from '../prisma.js';
 import { requireAuth } from '../middleware/auth.js';
 import { calibrateConfidence, prioritizeTopics, askPYQAssistant } from '../services/mlService.js';
 import { sendFeedbackEmail } from '../services/emailService.js';
 import { askStudyAssistant, generateFlashcardsForTopic, generateMockExamForTopics } from '../services/aiService.js';
 
+const registerSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
+  name: z.string().min(1, 'Name is required')
+});
+
+const loginSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters long')
+});
+
 export default {
+  register: async (_, { email, password, name }, { res }) => {
+    // Validate inputs
+    const validation = registerSchema.safeParse({ email, password, name });
+    if (!validation.success) {
+      throw new Error(validation.error.errors.map(e => e.message).join(', '));
+    }
+
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      throw new Error('Email is already registered');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const user = await prisma.user.create({
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+        role: 'STUDENT'
+      }
+    });
+
+    const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '15m' });
+    const refreshToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
+
+    if (res) {
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      });
+    }
+
+    return { token: accessToken, user };
+  },
+
+  login: async (_, { email, password }, { res }) => {
+    const validation = loginSchema.safeParse({ email, password });
+    if (!validation.success) {
+      throw new Error(validation.error.errors.map(e => e.message).join(', '));
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user || !user.password) {
+      throw new Error('Invalid email or password');
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      throw new Error('Invalid email or password');
+    }
+
+    const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '15m' });
+    const refreshToken = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
+
+    if (res) {
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      });
+    }
+
+    return { token: accessToken, user };
+  },
+
   loginWithGoogle: async (_, { email, name, googleId }) => {
     let user = await prisma.user.findUnique({
       where: { email }
@@ -172,10 +256,10 @@ export default {
 
     if (!exam) throw new Error('Exam not found');
 
-    // FIX: Deactivate all existing plans first
+    // FIX: Deactivate all existing plans first (soft delete)
     await prisma.studyPlan.updateMany({
       where: { userId, examId, isActive: true },
-      data: { isActive: false }
+      data: { isActive: false, deactivatedAt: new Date() }
     });
 
     const totalHours = planType === 'HOURS_48' ? 48 : planType === 'HOURS_72' ? 72 : 96;

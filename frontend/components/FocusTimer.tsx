@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Slider } from '@/components/ui/slider'
 import { socket, connectSocket, disconnectSocket } from '@/lib/socket'
 import AIAssistant from '@/components/AIAssistant'
+import { triggerConfetti } from '@/lib/confetti'
 
 interface FocusTimerProps {
   onSessionComplete: (data: { energyLevel: number; confidenceScore: number; notes: string }) => void
@@ -30,6 +31,43 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
   const [confidenceScore, setConfidenceScore] = useState(5)
   const [notes, setNotes] = useState('')
   const [activePeers, setActivePeers] = useState(1)
+
+  const [activeSound, setActiveSound] = useState<'none' | 'lofi' | 'rain' | 'cafe'>('none')
+  const [audioObj, setAudioObj] = useState<HTMLAudioElement | null>(null)
+
+  const handleSoundChange = (sound: 'none' | 'lofi' | 'rain' | 'cafe') => {
+    if (audioObj) {
+      audioObj.pause()
+      audioObj.src = ''
+    }
+
+    if (sound === 'none') {
+      setActiveSound('none')
+      setAudioObj(null)
+      return
+    }
+
+    let url = ''
+    if (sound === 'lofi') url = 'https://api.coderadio.freecodecamp.org/radio/8010/radio.mp3'
+    else if (sound === 'rain') url = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+    else if (sound === 'cafe') url = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
+
+    const audio = new Audio(url)
+    audio.loop = true
+    audio.volume = 0.25
+    audio.play().catch(e => console.log('Audio autoplay blocked: ', e))
+
+    setActiveSound(sound)
+    setAudioObj(audio)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (audioObj) {
+        audioObj.pause()
+      }
+    }
+  }, [audioObj])
 
   useEffect(() => {
     let interval: NodeJS.Timeout
@@ -110,6 +148,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
   }
 
   const handleFeedbackSubmit = () => {
+    triggerConfetti()
     onSessionComplete({
       energyLevel,
       confidenceScore,
@@ -136,7 +175,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
         </div>
       )}
 
-      <Card className="w-80 shadow-2xl border-indigo-500/25 bg-slate-900/95 border border-slate-850 text-white backdrop-blur-xl rounded-3xl overflow-hidden relative">
+      <Card className="w-80 shadow-2xl border-indigo-500/25 bg-slate-900/95 border border-slate-800 text-white backdrop-blur-xl rounded-3xl overflow-hidden relative">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 to-sky-400"></div>
         <CardHeader className="pb-2">
           <CardTitle className="text-xs font-bold flex items-center justify-between text-slate-350">
@@ -166,13 +205,35 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
               {timerRunning ? 'Pause' : 'Resume'}
             </Button>
             <Button
-              className="flex-1 text-xs font-bold rounded-xl bg-indigo-650 hover:bg-indigo-700 text-white"
+              className="flex-1 text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white"
               variant="secondary"
               onClick={handleFinishEarly}
             >
               Finish
             </Button>
           </div>
+
+          {/* Study Soundscapes Selector */}
+          {timerRunning && (
+            <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-1.5 animate-fade-in">
+              <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Ambient Audio</span>
+              <div className="flex gap-1">
+                {(['none', 'lofi', 'rain', 'cafe'] as const).map((sound) => (
+                  <button
+                    key={sound}
+                    onClick={() => handleSoundChange(sound)}
+                    className={`px-2 py-1 text-[9px] font-black uppercase rounded-lg border transition-all ${
+                      activeSound === sound
+                        ? 'bg-indigo-600/20 border-indigo-500 text-indigo-400'
+                        : 'bg-slate-950 border-slate-900 text-slate-500 hover:text-slate-400'
+                    }`}
+                  >
+                    {sound}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -228,7 +289,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[10px] uppercase font-bold text-slate-450 tracking-wider">
+              <label className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                 Study Notes (Optional)
               </label>
               <input
@@ -236,7 +297,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
                 placeholder="What did you learn or struggle with?"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full bg-slate-900/60 border border-slate-850 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
+                className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
               />
             </div>
 

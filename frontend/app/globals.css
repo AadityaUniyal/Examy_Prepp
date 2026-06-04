@@ -476,3 +476,46 @@
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 15px rgba(99, 102, 241, 0.08) !important;
   transform: translateY(-2px);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Mobile Responsive Breakpoints & Stacked Views
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Sidebar stacking/hiding rules */
+  aside.w-80 {
+    width: 100% !important;
+    height: auto !important;
+    position: relative !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  
+  .flex.min-h-screen.overflow-hidden {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+  }
+
+  main.flex-1 {
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+  
+  /* Primary study timer mobile focus: stack grid layouts to 1 column */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Stack three panel layout if used */
+  .flex.w-full.min-height-screen {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+
+  /* Make sure side panels stack or hide on mobile */
+  .flex.w-full.min-height-screen > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+

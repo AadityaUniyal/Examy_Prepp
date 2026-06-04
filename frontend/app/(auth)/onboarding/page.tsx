@@ -96,7 +96,7 @@ export default function OnboardingPage() {
             <div className="space-y-4">
               {/* Exam Name */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold text-slate-450 tracking-wider flex items-center gap-1.5">
+                <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5">
                   <Target className="w-3.5 h-3.5 text-indigo-400" /> Exam Name
                 </label>
                 <input
@@ -104,21 +104,21 @@ export default function OnboardingPage() {
                   placeholder="e.g., AP Biology Midterm, Final Physics Exam"
                   value={formData.examName}
                   onChange={(e) => setFormData({ ...formData, examName: e.target.value })}
-                  className="w-full bg-slate-950/60 border border-slate-850 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
+                  className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
                   required
                 />
               </div>
 
               {/* Exam Date */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold text-slate-450 tracking-wider flex items-center gap-1.5">
+                <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5 text-sky-400" /> Exam Target Date
                 </label>
                 <input
                   type="date"
                   value={formData.examDate}
                   onChange={(e) => setFormData({ ...formData, examDate: e.target.value })}
-                  className="w-full bg-slate-950/60 border border-slate-850 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
+                  className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
                   required
                 />
               </div>
@@ -126,13 +126,13 @@ export default function OnboardingPage() {
               {/* Board Selection & Hours in a Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase font-bold text-slate-450 tracking-wider flex items-center gap-1.5">
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5">
                     <BookOpen className="w-3.5 h-3.5 text-emerald-400" /> Board/System
                   </label>
                   <select
                     value={formData.board}
                     onChange={(e) => setFormData({ ...formData, board: e.target.value })}
-                    className="w-full bg-slate-950/60 border border-slate-850 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
+                    className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
                   >
                     {commonExams.map(exam => (
                       <option key={exam.value} value={exam.value} className="bg-slate-950 text-slate-200">
@@ -143,7 +143,7 @@ export default function OnboardingPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase font-bold text-slate-450 tracking-wider flex items-center gap-1.5">
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-amber-400" /> Study Budget (Hrs/Day)
                   </label>
                   <input
@@ -152,7 +152,7 @@ export default function OnboardingPage() {
                     max="24"
                     value={formData.hoursPerDay}
                     onChange={(e) => setFormData({ ...formData, hoursPerDay: e.target.value })}
-                    className="w-full bg-slate-950/60 border border-slate-850 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
+                    className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40 transition-all duration-200"
                     required
                   />
                 </div>

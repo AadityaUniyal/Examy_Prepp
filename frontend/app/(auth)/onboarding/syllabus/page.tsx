@@ -177,7 +177,7 @@ function SyllabusPageContent() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div
-                  className="bg-slate-950/40 border border-slate-850 hover:border-indigo-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
+                  className="bg-slate-950/40 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
                   onClick={() => setMode('template')}
                 >
                   <div className="h-10 w-10 mx-auto rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
@@ -188,7 +188,7 @@ function SyllabusPageContent() {
                 </div>
 
                 <div
-                  className="bg-slate-950/40 border border-slate-850 hover:border-emerald-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
+                  className="bg-slate-950/40 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
                   onClick={() => setMode('manual')}
                 >
                   <div className="h-10 w-10 mx-auto rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
@@ -199,7 +199,7 @@ function SyllabusPageContent() {
                 </div>
 
                 <div
-                  className="bg-slate-950/40 border border-slate-850 hover:border-sky-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
+                  className="bg-slate-950/40 border border-slate-800 hover:border-sky-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
                   onClick={() => setMode('pdf')}
                 >
                   <div className="h-10 w-10 mx-auto rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400">
@@ -265,7 +265,7 @@ function SyllabusPageContent() {
                 {templates.map((tpl, i) => (
                   <div
                     key={i}
-                    className="p-4 bg-slate-950/20 border border-slate-850 hover:border-indigo-500/30 rounded-2xl cursor-pointer flex justify-between items-center transition-all duration-150 hover:bg-slate-950/50"
+                    className="p-4 bg-slate-950/20 border border-slate-800 hover:border-indigo-500/30 rounded-2xl cursor-pointer flex justify-between items-center transition-all duration-150 hover:bg-slate-950/50"
                     onClick={() => handleSelectTemplate(i)}
                   >
                     <div>
@@ -291,7 +291,7 @@ function SyllabusPageContent() {
           {mode === 'manual' && (
             <div className="space-y-6">
               {/* Form to add a new topic */}
-              <div className="p-5 bg-slate-950/40 border border-slate-850 rounded-2xl space-y-4">
+              <div className="p-5 bg-slate-950/40 border border-slate-800 rounded-2xl space-y-4">
                 <h4 className="text-xs font-bold text-slate-350 uppercase tracking-wider flex items-center gap-1.5">
                   <PlusCircle className="w-4 h-4 text-emerald-400" /> Add New Topic
                 </h4>
@@ -301,7 +301,7 @@ function SyllabusPageContent() {
                     placeholder="e.g., Photosynthesis"
                     value={newTopic.name}
                     onChange={(e) => setNewTopic({ ...newTopic, name: e.target.value })}
-                    className="w-full bg-slate-950/80 border border-slate-850 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
                   />
                   <input
                     type="number"
@@ -310,7 +310,7 @@ function SyllabusPageContent() {
                     max="100"
                     value={newTopic.weightage || ''}
                     onChange={(e) => setNewTopic({ ...newTopic, weightage: parseInt(e.target.value) || 0 })}
-                    className="w-full bg-slate-950/80 border border-slate-850 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
                   />
                   <input
                     type="number"
@@ -318,7 +318,7 @@ function SyllabusPageContent() {
                     min="1"
                     value={newTopic.estimatedHours || ''}
                     onChange={(e) => setNewTopic({ ...newTopic, estimatedHours: parseInt(e.target.value) || 0 })}
-                    className="w-full bg-slate-950/80 border border-slate-850 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <Button 
@@ -338,7 +338,7 @@ function SyllabusPageContent() {
                 ) : (
                   <div className="space-y-3">
                     {topics.map((t, idx) => (
-                      <div key={idx} className="p-4 border border-slate-850 rounded-2xl space-y-3.5 bg-slate-950/20">
+                      <div key={idx} className="p-4 border border-slate-800 rounded-2xl space-y-3.5 bg-slate-950/20">
                         <div className="flex justify-between items-center">
                           <div>
                             <h5 className="font-bold text-sm text-slate-200">{t.name}</h5>
@@ -374,7 +374,7 @@ function SyllabusPageContent() {
                 )}
               </div>
 
-              <div className="flex justify-between mt-8 border-t border-slate-850 pt-6">
+              <div className="flex justify-between mt-8 border-t border-slate-800 pt-6">
                 <Button 
                   variant="outline" 
                   onClick={() => setMode('options')}

@@ -1,5 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { RetryLink } from '@apollo/client/link/retry'
+import { getSession } from 'next-auth/react'
 
 const httpLink = createHttpLink({
   uri: typeof window === 'undefined'
@@ -7,12 +9,30 @@ const httpLink = createHttpLink({
     : (process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://localhost:4000/graphql'),
 })
 
-const authLink = setContext((_, { headers }) => {
-  // Try to get token from storage for mock session fallback
-  let token = 'mock-student-123'
+const retryLink = new RetryLink({
+  delay: {
+    initial: 300,
+    max: 3000,
+    jitter: true
+  },
+  attempts: {
+    max: 3,
+    retryIf: (error) => !!error
+  }
+})
+
+const authLink = setContext(async (_, { headers }) => {
+  let token = ''
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('exameve_token')
-    if (saved) token = saved
+    if (saved) {
+      token = saved
+    } else {
+      const session = await getSession()
+      if (session && (session as any).backendToken) {
+        token = (session as any).backendToken
+      }
+    }
   }
 
   return {
@@ -24,6 +44,6 @@ const authLink = setContext((_, { headers }) => {
 })
 
 export const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: retryLink.concat(authLink).concat(httpLink),
   cache: new InMemoryCache(),
 })

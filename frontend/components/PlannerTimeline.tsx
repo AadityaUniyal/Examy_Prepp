@@ -91,7 +91,7 @@ export default function PlannerTimeline({
                       <span className="text-xs font-extrabold uppercase tracking-widest text-slate-500">
                         {formatTime(block.scheduledStart)}
                       </span>
-                      <span className="text-[10px] font-bold bg-slate-950/80 text-slate-400 px-2 py-0.5 rounded-lg border border-slate-850">
+                      <span className="text-[10px] font-bold bg-slate-950/80 text-slate-400 px-2 py-0.5 rounded-lg border border-slate-800">
                         {block.durationMins} mins
                       </span>
                       <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border tracking-wide capitalize ${
@@ -106,7 +106,7 @@ export default function PlannerTimeline({
                     <h4 className="text-lg font-bold text-white tracking-tight leading-snug">
                       {block.topic.name}
                     </h4>
-                    <p className="text-xs text-slate-450 font-medium">
+                    <p className="text-xs text-slate-400 font-medium">
                       Exam weightage: <span className="text-slate-350 font-bold">{block.topic.weightage}%</span> | Estimated prep: <span className="text-slate-350 font-bold">{block.topic.estimatedHours} hrs</span>
                     </p>
                   </div>
@@ -116,7 +116,7 @@ export default function PlannerTimeline({
                       {block.blockType === 'STUDY' && (
                         <Button
                           size="sm"
-                          className="bg-indigo-650 hover:bg-indigo-700 text-white font-bold rounded-xl h-9 px-4 flex items-center gap-1.5 shadow-lg shadow-indigo-500/10 transition-transform active:scale-[0.98]"
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl h-9 px-4 flex items-center gap-1.5 shadow-lg shadow-indigo-500/10 transition-transform active:scale-[0.98]"
                           onClick={() => onStartBlock(block)}
                         >
                           <Play className="w-3.5 h-3.5 fill-current" /> Start Study

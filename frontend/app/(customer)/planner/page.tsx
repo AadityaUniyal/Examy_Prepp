@@ -261,7 +261,7 @@ export default function PlannerPage() {
             onClick={() => setActiveTab('timeline')}
             className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'timeline'
-                ? 'bg-indigo-650 text-white hover:bg-indigo-700'
+                ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-transparent'
             }`}
           >
@@ -272,7 +272,7 @@ export default function PlannerPage() {
             onClick={() => setActiveTab('calendar')}
             className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'calendar'
-                ? 'bg-indigo-650 text-white hover:bg-indigo-700'
+                ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-transparent'
             }`}
           >

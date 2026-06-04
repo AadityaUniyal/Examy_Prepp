@@ -1,0 +1,18 @@
+{
+  "name": "exameve-root",
+  "version": "1.0.0",
+  "description": "Root orchestration for ExamEve services",
+  "private": true,
+  "scripts": {
+    "bootstrap": "npm install --prefix backend --legacy-peer-deps && npm install --prefix frontend --legacy-peer-deps",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:ml": "cd ml-service && venv\\Scripts\\python -m uvicorn app.main:app --reload --port 8000",
+    "dev": "concurrently --names \"backend,frontend,ml-service\" -c \"blue,green,magenta\" \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:ml\"",
+    "db:migrate": "cd backend && npx prisma migrate deploy",
+    "db:generate": "cd backend && npx prisma generate"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

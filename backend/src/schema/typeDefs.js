@@ -214,6 +214,8 @@ const typeDefs = `
   }
 
   type Mutation {
+    register(email: String!, password: String!, name: String!): AuthResponse!
+    login(email: String!, password: String!): AuthResponse!
     loginWithGoogle(email: String!, name: String!, googleId: String): AuthResponse!
     createExam(name: String!, examDate: String!, board: String!): Exam!
     addTopics(examId: ID!, topics: [TopicInput!]!): [Topic!]!

@@ -14,6 +14,44 @@ export default function CustomerLayout({
   const pathname = usePathname()
   const { data: session } = useSession()
 
+  React.useEffect(() => {
+    let tabSwitchCount = 0;
+    let lastSwitchTime = Date.now();
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        const now = Date.now();
+        if (now - lastSwitchTime < 30000) {
+          tabSwitchCount++;
+          if (tabSwitchCount >= 4) {
+            console.log('[Panic Protocol] High-frequency tab defocus detected!');
+            window.dispatchEvent(new Event('trigger-panic-modal'));
+            
+            // Execute passive autopilot recalibration to reduce cognitive load
+            fetch('/api/autopilot-recalibrate', { method: 'POST' })
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  window.dispatchEvent(new CustomEvent('autopilot-recalibrated', { detail: data }));
+                }
+              })
+              .catch(err => console.error(err));
+              
+            tabSwitchCount = 0;
+          }
+        } else {
+          tabSwitchCount = 1;
+        }
+        lastSwitchTime = now;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Study Planner', href: '/planner', icon: Calendar },
@@ -83,7 +121,7 @@ export default function CustomerLayout({
             <ShieldAlert className="w-5 h-5" /> Panic Protocol
           </button>
 
-          <div className="pt-4 border-t border-slate-850 flex items-center justify-between gap-3">
+          <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300">
                 {session?.user?.name?.[0] || 'S'}

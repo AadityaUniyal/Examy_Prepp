@@ -81,7 +81,7 @@ export default function LoginPage() {
             <Button
               variant="outline"
               onClick={() => router.push('/onboarding?demo=true')}
-              className="w-full h-13 rounded-xl border-slate-850 bg-slate-900/20 hover:bg-slate-800/60 text-slate-300 font-semibold flex items-center justify-center gap-2 transition-transform active:scale-[0.99]"
+              className="w-full h-13 rounded-xl border-slate-800 bg-slate-900/20 hover:bg-slate-800/60 text-slate-300 font-semibold flex items-center justify-center gap-2 transition-transform active:scale-[0.99]"
             >
               Explore Demo Mode <ArrowRight className="w-4 h-4 text-indigo-400" />
             </Button>

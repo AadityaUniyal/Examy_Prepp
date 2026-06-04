@@ -108,7 +108,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
         />
       </div>
 
-      <CardHeader className="border-b border-slate-850 bg-slate-950/20 py-4 pt-6">
+      <CardHeader className="border-b border-slate-800 bg-slate-950/20 py-4 pt-6">
         <CardTitle className="text-xs font-bold flex items-center justify-between text-slate-400">
           <span className="truncate max-w-[400px] uppercase tracking-wider flex items-center gap-1.5">
             <HelpCircle className="w-4 h-4 text-indigo-400" /> Quiz: {topicName}
@@ -129,7 +129,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
             const isSelected = selectedIdx === idx
             const isCorrect = currentQuestion.answerIndex === idx
             
-            let btnClass = 'w-full text-left justify-start h-auto py-3.5 px-4 text-sm font-semibold border-slate-850 bg-slate-950/30 text-slate-350 hover:bg-slate-800/40 hover:text-white transition-all rounded-xl duration-150 active:scale-[0.99] border flex items-center gap-3'
+            let btnClass = 'w-full text-left justify-start h-auto py-3.5 px-4 text-sm font-semibold border-slate-800 bg-slate-950/30 text-slate-350 hover:bg-slate-800/40 hover:text-white transition-all rounded-xl duration-150 active:scale-[0.99] border flex items-center gap-3'
 
             if (selectedIdx !== null) {
               if (isCorrect) {
@@ -148,7 +148,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
                 onClick={() => handleSelectOption(idx)}
                 disabled={selectedIdx !== null}
               >
-                <span className="font-extrabold text-[11px] opacity-40 bg-slate-950 h-6 w-6 rounded-lg flex items-center justify-center shrink-0 border border-slate-850">
+                <span className="font-extrabold text-[11px] opacity-40 bg-slate-950 h-6 w-6 rounded-lg flex items-center justify-center shrink-0 border border-slate-800">
                   {String.fromCharCode(65 + idx)}
                 </span>
                 <span>{opt}</span>

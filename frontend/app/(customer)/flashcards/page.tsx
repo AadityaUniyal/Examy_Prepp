@@ -206,7 +206,7 @@ export default function FlashcardsPage() {
             onClick={() => setActiveTab('practice')}
             className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'practice'
-                ? 'bg-indigo-650 text-white hover:bg-indigo-700'
+                ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-transparent'
             }`}
           >
@@ -220,7 +220,7 @@ export default function FlashcardsPage() {
             }}
             className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'dashboard'
-                ? 'bg-indigo-650 text-white hover:bg-indigo-700'
+                ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-transparent'
             }`}
           >
@@ -252,7 +252,7 @@ export default function FlashcardsPage() {
                   <div className="text-3xl font-black text-emerald-400 mt-2">
                     {(statsData?.flashcardStats?.averageEaseFactor || 2.5).toFixed(2)}
                   </div>
-                  <p className="text-[10px] text-slate-550 mt-1">SM2 memory coefficient</p>
+                  <p className="text-[10px] text-slate-500 mt-1">SM2 memory coefficient</p>
                 </Card>
 
                 <Card className="bg-slate-900/40 border-slate-800/80 p-5 relative overflow-hidden">
@@ -263,7 +263,7 @@ export default function FlashcardsPage() {
                   }`}>
                     {statsData?.flashcardStats?.overdueCount || 0}
                   </div>
-                  <p className="text-[10px] text-slate-550 mt-1">Require immediate practice</p>
+                  <p className="text-[10px] text-slate-500 mt-1">Require immediate practice</p>
                 </Card>
 
                 <Card className="bg-slate-900/40 border-slate-800/80 p-5 relative overflow-hidden">
@@ -272,13 +272,13 @@ export default function FlashcardsPage() {
                   <div className="text-3xl font-black text-sky-400 mt-2">
                     {statsData?.flashcardStats?.masteredTopics || 0}
                   </div>
-                  <p className="text-[10px] text-slate-550 mt-1">Interval hours &gt; 24h</p>
+                  <p className="text-[10px] text-slate-500 mt-1">Interval hours &gt; 24h</p>
                 </Card>
               </div>
 
               {/* PieChart Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="bg-slate-900/40 border-slate-850 p-6 md:col-span-2 flex flex-col justify-between">
+                <Card className="bg-slate-900/40 border-slate-800 p-6 md:col-span-2 flex flex-col justify-between">
                   <CardHeader className="p-0">
                     <CardTitle className="text-base font-extrabold text-white">Spaced Learning Progression</CardTitle>
                     <CardDescription className="text-slate-500 text-xs">Breakdown of syllabus topics currently in spaced queues</CardDescription>
@@ -318,7 +318,7 @@ export default function FlashcardsPage() {
                   </div>
                 </Card>
 
-                <Card className="bg-gradient-to-b from-slate-900/50 to-indigo-950/10 border border-slate-850 p-6 flex flex-col justify-between">
+                <Card className="bg-gradient-to-b from-slate-900/50 to-indigo-950/10 border border-slate-800 p-6 flex flex-col justify-between">
                   <div className="space-y-4">
                     <h3 className="font-extrabold text-white text-base flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-emerald-400" /> Retention Insight
@@ -342,7 +342,7 @@ export default function FlashcardsPage() {
                   </div>
                   <Button
                     onClick={() => setActiveTab('practice')}
-                    className="w-full mt-6 bg-indigo-650 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs"
+                    className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs"
                   >
                     Start Practice Deck
                   </Button>
@@ -388,7 +388,7 @@ export default function FlashcardsPage() {
               onClick={handleGenerate}
               disabled={generating}
               variant="outline"
-              className="border-indigo-500/20 text-indigo-400 hover:bg-indigo-650/10 flex items-center gap-2 w-full sm:w-auto rounded-xl self-end sm:self-center"
+              className="border-indigo-500/20 text-indigo-400 hover:bg-indigo-600/10 flex items-center gap-2 w-full sm:w-auto rounded-xl self-end sm:self-center"
             >
               <Sparkles className="w-4 h-4" /> Regenerate cards with AI
             </Button>
@@ -399,7 +399,7 @@ export default function FlashcardsPage() {
         {!selectedTopicId ? (
           <div className="py-24 text-center border-2 border-dashed border-slate-800/80 rounded-3xl bg-slate-900/10">
             <BrainCircuit className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-            <h3 className="font-extrabold text-slate-450 text-lg">No Deck Loaded</h3>
+            <h3 className="font-extrabold text-slate-400 text-lg">No Deck Loaded</h3>
             <p className="text-slate-500 text-xs mt-1 max-w-sm mx-auto">
               Please choose a syllabus topic from the dropdown selection above to start generating practice flashcards.
             </p>

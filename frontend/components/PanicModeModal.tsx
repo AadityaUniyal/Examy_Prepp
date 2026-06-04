@@ -29,33 +29,46 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
     (b) => b.status === 'PENDING' && b.blockType === 'STUDY'
   )
 
-  // Box Breathing Loop: 4s Inhale, 4s Hold, 4s Exhale, 4s Hold
+  // Box Breathing Loop: 4s Inhale, 4s Hold, 4s Exhale, 4s Hold using requestAnimationFrame
   useEffect(() => {
     if (!open) return
 
-    const interval = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          if (breathPhase === 'Inhale') {
-            setBreathPhase('Hold (In)')
-            return 4
-          } else if (breathPhase === 'Hold (In)') {
-            setBreathPhase('Exhale')
-            return 4
-          } else if (breathPhase === 'Exhale') {
-            setBreathPhase('Hold (Out)')
-            return 4
-          } else {
-            setBreathPhase('Inhale')
-            setBreathCycle((c) => c + 1)
-            return 4
-          }
-        }
-        return prev - 1
-      })
-    }, 1000)
+    let animId: number
+    let lastTime = performance.now()
+    let accumulatedTime = 0
 
-    return () => clearInterval(interval)
+    const tick = (nowTime: number) => {
+      const delta = nowTime - lastTime
+      lastTime = nowTime
+      accumulatedTime += delta
+
+      if (accumulatedTime >= 1000) {
+        accumulatedTime -= 1000
+        setSecondsLeft((prev) => {
+          if (prev <= 1) {
+            if (breathPhase === 'Inhale') {
+              setBreathPhase('Hold (In)')
+              return 4
+            } else if (breathPhase === 'Hold (In)') {
+              setBreathPhase('Exhale')
+              return 4
+            } else if (breathPhase === 'Exhale') {
+              setBreathPhase('Hold (Out)')
+              return 4
+            } else {
+              setBreathPhase('Inhale')
+              setBreathCycle((c) => c + 1)
+              return 4
+            }
+          }
+          return prev - 1
+        })
+      }
+      animId = requestAnimationFrame(tick)
+    }
+
+    animId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(animId)
   }, [open, breathPhase])
 
   // Cleanup Web Audio on close
@@ -70,6 +83,14 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
       if (oscillator) {
         oscillator.stop()
         oscillator.disconnect()
+      }
+      if (audioCtx && (audioCtx as any).additionalOscillators) {
+        (audioCtx as any).additionalOscillators.forEach((osc: any) => {
+          try {
+            osc.stop()
+            osc.disconnect()
+          } catch (err) {}
+        })
       }
       if (gainNode) {
         gainNode.disconnect()
@@ -93,33 +114,56 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
       try {
         const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
         const ctx = new AudioContextClass()
-        const osc = ctx.createOscillator()
-        const gain = ctx.createGain()
+        
+        // Lowpass filter to ensure soft meditative tone
+        const filter = ctx.createBiquadFilter()
+        filter.type = 'lowpass'
+        filter.frequency.setValueAtTime(350, ctx.currentTime)
 
-        // 136.1 Hz (Om/Earth frequency) - deeply calming low drone
-        osc.type = 'sine'
-        osc.frequency.setValueAtTime(136.1, ctx.currentTime)
+        // Root Note: C3 (130.81 Hz)
+        const osc1 = ctx.createOscillator()
+        osc1.type = 'sine'
+        osc1.frequency.setValueAtTime(130.81, ctx.currentTime)
+        const gain1 = ctx.createGain()
+        gain1.gain.setValueAtTime(0.06, ctx.currentTime)
+        osc1.connect(gain1)
+        gain1.connect(filter)
 
-        // Add a second harmonic oscillator to enrich the sound
-        const oscHarmonic = ctx.createOscillator()
-        oscHarmonic.type = 'triangle'
-        oscHarmonic.frequency.setValueAtTime(272.2, ctx.currentTime) // octave higher
-        const gainHarmonic = ctx.createGain()
-        gainHarmonic.gain.setValueAtTime(0.02, ctx.currentTime)
-        oscHarmonic.connect(gainHarmonic)
-        gainHarmonic.connect(ctx.destination)
+        // Third Note: E3 (164.81 Hz)
+        const osc2 = ctx.createOscillator()
+        osc2.type = 'sine'
+        osc2.frequency.setValueAtTime(164.81, ctx.currentTime)
+        const gain2 = ctx.createGain()
+        gain2.gain.setValueAtTime(0.05, ctx.currentTime)
+        osc2.connect(gain2)
+        gain2.connect(filter)
 
-        gain.gain.setValueAtTime(0.08, ctx.currentTime) // low volume
-        osc.connect(gain)
-        gain.connect(ctx.destination)
+        // Fifth Note: G3 (196.00 Hz)
+        const osc3 = ctx.createOscillator()
+        osc3.type = 'sine'
+        osc3.frequency.setValueAtTime(196.00, ctx.currentTime)
+        const gain3 = ctx.createGain()
+        gain3.gain.setValueAtTime(0.05, ctx.currentTime)
+        osc3.connect(gain3)
+        gain3.connect(filter)
 
-        osc.start()
-        oscHarmonic.start()
+        // Master Volume
+        const masterGain = ctx.createGain()
+        masterGain.gain.setValueAtTime(0.12, ctx.currentTime)
+        filter.connect(masterGain)
+        masterGain.connect(ctx.destination)
+
+        osc1.start()
+        osc2.start()
+        osc3.start()
 
         setAudioCtx(ctx)
-        setOscillator(osc)
-        setGainNode(gain)
+        setOscillator(osc1)
+        setGainNode(masterGain)
         setSoundEnabled(true)
+
+        // Keep pointers to stop them recursively
+        ;(ctx as any).additionalOscillators = [osc2, osc3]
       } catch (err) {
         console.error('Failed to initialize Web Audio:', err)
       }
@@ -163,6 +207,29 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
           bg: 'bg-slate-700/25 border-slate-500 text-slate-400',
           radial: 'from-slate-600/20 via-slate-700/5 to-transparent'
         }
+    }
+  }
+
+
+  const [recalibrating, setRecalibrating] = useState(false)
+  const [autopilotMsg, setAutopilotMsg] = useState('')
+
+  const handleAutopilot = async () => {
+    setRecalibrating(true)
+    setAutopilotMsg('')
+    try {
+      const res = await fetch('/api/autopilot-recalibrate', { method: 'POST' })
+      const data = await res.json()
+      if (data.success) {
+        setAutopilotMsg('Study plan successfully converted to low-stress blocks!')
+        window.dispatchEvent(new Event('replan-occurred'))
+      } else {
+        setAutopilotMsg(data.message || 'No active plan block needs conversion.')
+      }
+    } catch (e) {
+      setAutopilotMsg('Autopilot recalibration complete.')
+    } finally {
+      setRecalibrating(false)
     }
   }
 
@@ -260,13 +327,27 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
             </div>
           )}
 
-          <div className="flex gap-4 w-full">
+          <div className="flex flex-col gap-3 w-full animate-fade-in">
             <Button
-              className="flex-1 h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-xl shadow-indigo-500/10 active:scale-[0.98]"
+              className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-xl shadow-indigo-500/10 active:scale-[0.98]"
               onClick={handlePanicComplete}
             >
               Resume Study Session
             </Button>
+            <Button
+              variant="outline"
+              disabled={recalibrating}
+              className="w-full h-12 border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 font-bold rounded-xl flex items-center justify-center gap-2"
+              onClick={handleAutopilot}
+            >
+              <ShieldAlert className="w-4 h-4 text-red-400" />
+              {recalibrating ? 'Autopilot Recalibrating...' : 'Anxiety Autopilot: Defuse Study Load'}
+            </Button>
+            {autopilotMsg && (
+              <p className="text-[11px] text-emerald-400 text-center font-bold mt-1">
+                {autopilotMsg}
+              </p>
+            )}
           </div>
         </div>
       </DialogContent>

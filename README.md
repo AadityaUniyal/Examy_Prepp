@@ -68,15 +68,27 @@ graph TD
 
 ## 🚀 Quick Start Guide
 
-Initialize the platform using Docker Compose (orchestrates postgres, client, backend, and ML services concurrently):
+Initialize the platform locally using the root orchestration manager (runs frontend, backend, and ML services concurrently):
 
 ```bash
 # Clone the repository
 git clone https://github.com/AadityaUniyal/Examy_Prepp.git
-cd Examy_Prepp/exameve
+cd Examy_Prepp
 
-# Launch all containers
-docker-compose up --build
+# Install root manager dependencies
+npm install
+
+# Bootstrap all workspace package dependencies
+npm run bootstrap
+
+# Configure environment variables (.env files based on .env.example templates)
+
+# Run database migrations & client generation
+npm run db:generate
+npm run db:migrate
+
+# Start all dev servers concurrently
+npm run dev
 ```
 
 ### Google OAuth Configuration Setup
@@ -90,7 +102,7 @@ docker-compose up --build
 5. Create `.env` files in `frontend`, `backend`, and `ml-service` based on `.env.example` templates, and populate `NEXT_PUBLIC_GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` variables respectively.
 
 
-### Manual Development Setup
+### Manual Development Setup (Individual Service Execution)
 
 If you prefer starting services individually for development:
 

@@ -1,4 +1,5 @@
 import { prisma } from '../prisma.js';
+import { sendStudyBlockReminder } from './emailService.js';
 
 export function startNotificationScheduler() {
   console.log('[NotificationService] Study reminder worker started.');
@@ -27,7 +28,6 @@ export function startNotificationScheduler() {
         const userId = block.plan.userId;
         const msg = `Your study block for "${block.topic.name}" starts soon at ${new Date(block.scheduledStart).toLocaleTimeString()}!`;
         
-        // Ensure duplicate alerts aren't sent for the same block
         const exists = await prisma.notification.findFirst({
           where: {
             userId,
@@ -45,6 +45,29 @@ export function startNotificationScheduler() {
             }
           });
           console.log(`[NotificationService] Generated alert for user ${userId}: ${msg}`);
+
+          // Send Email via Resend
+          try {
+            const user = await prisma.user.findUnique({ where: { id: userId } });
+            if (user) {
+              await sendStudyBlockReminder({
+                userEmail: user.email,
+                userName: user.name,
+                topicName: block.topic.name,
+                scheduledTime: block.scheduledStart
+              });
+              await prisma.notification.create({
+                data: {
+                  userId,
+                  type: 'STUDY_REMINDER_EMAIL',
+                  message: `Email reminder sent: ${msg}`,
+                  channel: 'EMAIL'
+                }
+              });
+            }
+          } catch (emailErr) {
+            console.error('[NotificationService] Failed to send email reminder:', emailErr.message);
+          }
         }
       }
     } catch (err) {

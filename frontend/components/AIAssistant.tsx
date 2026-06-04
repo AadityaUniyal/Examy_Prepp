@@ -111,7 +111,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-850 transition-colors"
+              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -162,7 +162,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
           </div>
 
           {/* Bottom Settings & Input */}
-          <div className="p-4 bg-slate-950/40 border-t border-slate-850 space-y-3">
+          <div className="p-4 bg-slate-950/40 border-t border-slate-800 space-y-3">
             {/* ELI5 Toggle */}
             <div className="flex justify-between items-center">
               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider flex items-center gap-1">
