@@ -182,14 +182,14 @@ export default function MockExamPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-transparent text-[rgb(var(--text-primary))] p-4 md:p-8 relative overflow-hidden">
       {/* Decorative Glows */}
       <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-sky-500/5 blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto space-y-6 z-10 relative">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/50 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/50 pb-6">
           <div>
             <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-1.5">
               <Sparkles className="w-3.5 h-3.5" /> Weakness Calibration Hub
@@ -197,14 +197,14 @@ export default function MockExamPage() {
             <h1 className="text-4xl font-black text-white tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
               AI Mock Exam
             </h1>
-            <p className="text-slate-400 text-sm mt-1">
+            <p className="text-[rgb(var(--text-muted))] text-sm mt-1">
               Personalized mock exams targeting weakest syllabus subjects to feed model calibration loops.
             </p>
           </div>
           <Button 
             variant="outline" 
             onClick={() => router.push('/dashboard')} 
-            className="border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 flex items-center gap-2 self-start md:self-auto rounded-xl"
+            className="border-slate-200 bg-[rgb(var(--surface-0))]/60 hover:bg-slate-100/80 text-[rgb(var(--text-secondary))] flex items-center gap-2 self-start md:self-auto rounded-xl"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </Button>
@@ -212,11 +212,11 @@ export default function MockExamPage() {
 
         {/* Start / Intro State */}
         {!examStarted && (
-          <Card className="bg-slate-900/30 border border-slate-900 p-8 text-center space-y-6 max-w-2xl mx-auto">
+          <Card className="bg-[rgb(var(--surface-0))]/40 border border-slate-100 p-8 text-center space-y-6 max-w-2xl mx-auto">
             <Award className="w-16 h-16 text-indigo-400 mx-auto animate-pulse" />
             <div>
               <h2 className="text-2xl font-extrabold text-white">Generate Mock Assessment</h2>
-              <p className="text-slate-400 text-xs mt-2 leading-relaxed">
+              <p className="text-[rgb(var(--text-muted))] text-xs mt-2 leading-relaxed">
                 ExamEve will scan your topic confidence logs, identify your lowest mastery subjects, and request a 5-question multiple choice test from Gemini. Results will feed retraining databases.
               </p>
             </div>
@@ -247,13 +247,13 @@ export default function MockExamPage() {
         {examStarted && !gradeResult && (
           <div className="space-y-6">
             {/* Countdown / Stats bar */}
-            <div className="flex justify-between items-center bg-slate-900/40 p-4 border border-slate-900 rounded-2xl">
+            <div className="flex justify-between items-center bg-[rgb(var(--surface-0))]/60 p-4 border border-slate-100 rounded-2xl">
               <div className="flex items-center gap-2 font-bold text-slate-350 text-xs">
                 <span>Subject Assessment (5 Questions)</span>
               </div>
-              <div className="flex items-center gap-2 bg-slate-950/80 px-4 py-1.5 border border-slate-800 rounded-xl font-bold text-xs">
+              <div className="flex items-center gap-2 bg-transparent/80 px-4 py-1.5 border border-slate-200 rounded-xl font-bold text-xs">
                 <Timer className={`w-4 h-4 ${timeLeft < 60 ? 'text-rose-400 animate-pulse' : 'text-indigo-400'}`} />
-                <span className={timeLeft < 60 ? 'text-rose-450' : 'text-slate-300'}>
+                <span className={timeLeft < 60 ? 'text-rose-450' : 'text-[rgb(var(--text-secondary))]'}>
                   Time Remaining: {formatTimer(timeLeft)}
                 </span>
               </div>
@@ -262,8 +262,8 @@ export default function MockExamPage() {
             {/* Questions list */}
             <div className="space-y-6">
               {questions.map((q, qIdx) => (
-                <Card key={q.id} className="bg-slate-900/30 border border-slate-900/60 p-6 space-y-4">
-                  <h4 className="text-base font-bold text-slate-100 flex items-start gap-2.5">
+                <Card key={q.id} className="bg-[rgb(var(--surface-0))]/40 border border-slate-200/40 p-6 space-y-4">
+                  <h4 className="text-base font-bold text-[rgb(var(--text-primary))] flex items-start gap-2.5">
                     <span className="text-indigo-400 text-sm font-black mt-0.5">0{qIdx + 1}.</span>
                     <span>{q.question}</span>
                   </h4>
@@ -277,7 +277,7 @@ export default function MockExamPage() {
                           className={`p-4 rounded-xl border text-xs cursor-pointer select-none transition-all ${
                             isSelected
                               ? 'bg-indigo-600/15 border-indigo-500 text-indigo-300 font-bold'
-                              : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:bg-slate-950/80 hover:text-slate-200'
+                              : 'bg-transparent/40 border-slate-200 text-[rgb(var(--text-muted))] hover:bg-transparent/80 hover:text-[rgb(var(--text-primary))]'
                           }`}
                         >
                           <span className="mr-2 font-black uppercase text-indigo-400">{String.fromCharCode(65 + oIdx)}.</span>
@@ -299,7 +299,7 @@ export default function MockExamPage() {
                     setExamStarted(false)
                   }
                 }}
-                className="text-slate-400 hover:text-slate-200"
+                className="text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text-primary))]"
               >
                 Quit Assessment
               </Button>
@@ -318,7 +318,7 @@ export default function MockExamPage() {
         {gradeResult && (
           <div className="space-y-6">
             {/* Score Summary panel */}
-            <Card className="bg-slate-900/30 border border-slate-900 p-8 text-center space-y-6">
+            <Card className="bg-[rgb(var(--surface-0))]/40 border border-slate-100 p-8 text-center space-y-6">
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
               
               <div className="mx-auto h-20 w-20 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 animate-bounce">
@@ -337,7 +337,7 @@ export default function MockExamPage() {
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-950/40 border border-slate-900 rounded-2xl max-w-md mx-auto text-xs leading-relaxed text-slate-300">
+              <div className="p-4 bg-transparent/40 border border-slate-100 rounded-2xl max-w-md mx-auto text-xs leading-relaxed text-[rgb(var(--text-secondary))]">
                 {gradeResult.feedback}
               </div>
 
@@ -351,7 +351,7 @@ export default function MockExamPage() {
                 <Button
                   variant="outline"
                   onClick={() => router.push('/dashboard')}
-                  className="border-slate-800 bg-slate-900/40 text-slate-350 hover:bg-slate-900 rounded-xl h-11 px-6"
+                  className="border-slate-200 bg-[rgb(var(--surface-0))]/60 text-slate-350 hover:bg-[rgb(var(--surface-0))] rounded-xl h-11 px-6"
                 >
                   Dashboard
                 </Button>
@@ -360,12 +360,12 @@ export default function MockExamPage() {
 
             {/* Question explanation list */}
             <div className="space-y-4">
-              <h3 className="text-sm font-extrabold text-slate-400 uppercase tracking-widest">Question Explanations</h3>
+              <h3 className="text-sm font-extrabold text-[rgb(var(--text-muted))] uppercase tracking-widest">Question Explanations</h3>
               {questions.map((q, idx) => {
                 const userAns = selectedAnswers[idx]
                 const isCorrect = userAns === q.correctIndex
                 return (
-                  <Card key={q.id} className="bg-slate-900/20 border border-slate-900 p-5 space-y-3">
+                  <Card key={q.id} className="bg-[rgb(var(--surface-0))]/20 border border-slate-100 p-5 space-y-3">
                     <div className="flex justify-between items-start gap-2.5">
                       <h4 className="text-sm font-bold text-white leading-relaxed">
                         0{idx + 1}. {q.question}
@@ -392,8 +392,8 @@ export default function MockExamPage() {
                       )}
                     </div>
 
-                    <div className="p-3 bg-slate-950/40 rounded-xl border border-slate-900/60 text-xs leading-relaxed text-slate-400">
-                      <span className="font-bold text-slate-300 block mb-0.5">Explanation</span>
+                    <div className="p-3 bg-transparent/40 rounded-xl border border-slate-200/40 text-xs leading-relaxed text-[rgb(var(--text-muted))]">
+                      <span className="font-bold text-[rgb(var(--text-secondary))] block mb-0.5">Explanation</span>
                       {q.explanation}
                     </div>
                   </Card>

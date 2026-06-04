@@ -39,7 +39,7 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
   }
 
   return (
-    <Card className="max-w-md w-full mx-auto p-6 bg-slate-900 border-slate-800 text-white rounded-2xl shadow-xl">
+    <Card className="max-w-md w-full mx-auto p-6 bg-[rgb(var(--surface-0))] border-slate-200 text-white rounded-2xl shadow-xl">
       <div className="flex justify-between items-center mb-6">
         <h3 className="font-bold text-lg text-indigo-400">Exam Setup Wizard</h3>
         <span className="text-xs text-slate-500 font-bold font-mono">Step {step} / 3</span>
@@ -51,18 +51,18 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
             <GraduationCap className="w-6 h-6 text-indigo-400" />
           </div>
           <h4 className="font-extrabold text-lg text-white">Name your Exam</h4>
-          <p className="text-xs text-slate-400">Specify the subject or exam title alongside the academic board details.</p>
+          <p className="text-xs text-[rgb(var(--text-muted))]">Specify the subject or exam title alongside the academic board details.</p>
           <Input
             placeholder="Exam Name (e.g. Physics Final)"
             value={examName}
             onChange={(e) => setExamName(e.target.value)}
-            className="bg-slate-950 border-slate-800 text-white h-11"
+            className="bg-transparent border-slate-200 text-white h-11"
           />
           <Input
             placeholder="Board Name (e.g. CBSE, IB)"
             value={board}
             onChange={(e) => setBoard(e.target.value)}
-            className="bg-slate-950 border-slate-800 text-white h-11"
+            className="bg-transparent border-slate-200 text-white h-11"
           />
         </div>
       )}
@@ -73,12 +73,12 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
             <CalendarRange className="w-6 h-6 text-indigo-400" />
           </div>
           <h4 className="font-extrabold text-lg text-white">Select Exam Date</h4>
-          <p className="text-xs text-slate-400">This helps us schedule your study blocks and optimize review time pressure.</p>
+          <p className="text-xs text-[rgb(var(--text-muted))]">This helps us schedule your study blocks and optimize review time pressure.</p>
           <Input
             type="date"
             value={examDate}
             onChange={(e) => setExamDate(e.target.value)}
-            className="bg-slate-950 border-slate-800 text-white h-11"
+            className="bg-transparent border-slate-200 text-white h-11"
           />
         </div>
       )}
@@ -89,19 +89,19 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
             <BookOpen className="w-6 h-6 text-indigo-400" />
           </div>
           <h4 className="font-extrabold text-lg text-white">Add Exam Topics</h4>
-          <p className="text-xs text-slate-400">Enter the topics you need to cover for this syllabus.</p>
+          <p className="text-xs text-[rgb(var(--text-muted))]">Enter the topics you need to cover for this syllabus.</p>
           <div className="flex gap-2">
             <Input
               placeholder="Topic name (e.g. Thermodynamics)"
               value={topicInput}
               onChange={(e) => setTopicInput(e.target.value)}
-              className="bg-slate-950 border-slate-800 text-white h-11"
+              className="bg-transparent border-slate-200 text-white h-11"
             />
             <Button onClick={handleAddTopic} className="bg-indigo-600 hover:bg-indigo-700 h-11 px-4 font-bold">Add</Button>
           </div>
           <div className="flex flex-wrap gap-2 mt-2 max-h-32 overflow-y-auto">
             {topics.map((t, idx) => (
-              <span key={idx} className="bg-slate-800 border border-slate-700 text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5 font-bold">
+              <span key={idx} className="bg-slate-800 border border-slate-200 text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5 font-bold">
                 {t}
                 <button onClick={() => handleRemoveTopic(idx)} className="text-red-400 hover:text-red-500 font-extrabold">×</button>
               </span>
@@ -110,11 +110,11 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
         </div>
       )}
 
-      <div className="flex justify-between items-center mt-8 pt-4 border-t border-slate-800/80">
+      <div className="flex justify-between items-center mt-8 pt-4 border-t border-slate-200/80">
         <Button
           disabled={step === 1}
           onClick={() => setStep(step - 1)}
-          className="bg-transparent border border-slate-800 text-slate-400 hover:bg-slate-800"
+          className="bg-transparent border border-slate-200 text-[rgb(var(--text-muted))] hover:bg-slate-100"
         >
           Back
         </Button>

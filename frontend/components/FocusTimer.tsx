@@ -169,13 +169,13 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {/* Real-time Peer Lounge Count badge */}
       {timerRunning && (
-        <div className="bg-slate-900/90 text-indigo-300 border border-slate-800 rounded-full px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-wider shadow-lg flex items-center gap-1.5 backdrop-blur-md">
+        <div className="bg-[rgb(var(--surface-0))]/90 text-indigo-300 border border-slate-200 rounded-full px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-wider shadow-lg flex items-center gap-1.5 backdrop-blur-md">
           <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
           {activePeers} {activePeers === 1 ? 'Peer' : 'Peers'} studying this now
         </div>
       )}
 
-      <Card className="w-80 shadow-2xl border-indigo-500/25 bg-slate-900/95 border border-slate-800 text-white backdrop-blur-xl rounded-3xl overflow-hidden relative">
+      <Card className="w-80 shadow-2xl border-indigo-500/25 bg-[rgb(var(--surface-0))]/95 border border-slate-200 text-white backdrop-blur-xl rounded-3xl overflow-hidden relative">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 to-sky-400"></div>
         <CardHeader className="pb-2">
           <CardTitle className="text-xs font-bold flex items-center justify-between text-slate-350">
@@ -198,7 +198,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
 
           <div className="flex gap-2">
             <Button
-              className="flex-1 text-xs font-bold rounded-xl border border-slate-800 bg-slate-950/40 hover:bg-slate-800/80 text-white"
+              className="flex-1 text-xs font-bold rounded-xl border border-slate-200 bg-transparent/40 hover:bg-slate-100/80 text-white"
               variant={timerRunning ? 'outline' : 'default'}
               onClick={handlePauseResume}
             >
@@ -215,7 +215,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
 
           {/* Study Soundscapes Selector */}
           {timerRunning && (
-            <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-1.5 animate-fade-in">
+            <div className="mt-4 pt-4 border-t border-slate-200/80 flex items-center justify-between gap-1.5 animate-fade-in">
               <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Ambient Audio</span>
               <div className="flex gap-1">
                 {(['none', 'lofi', 'rain', 'cafe'] as const).map((sound) => (
@@ -225,7 +225,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
                     className={`px-2 py-1 text-[9px] font-black uppercase rounded-lg border transition-all ${
                       activeSound === sound
                         ? 'bg-indigo-600/20 border-indigo-500 text-indigo-400'
-                        : 'bg-slate-950 border-slate-900 text-slate-500 hover:text-slate-400'
+                        : 'bg-transparent border-slate-100 text-slate-500 hover:text-[rgb(var(--text-muted))]'
                     }`}
                   >
                     {sound}
@@ -241,7 +241,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
       <AIAssistant topicId={activeBlock.topic.id} topicName={activeBlock.topic.name} />
 
       <Dialog open={showFeedbackModal} onOpenChange={setShowFeedbackModal}>
-        <DialogContent className="sm:max-w-md bg-slate-950 border border-slate-900 text-white rounded-3xl overflow-hidden shadow-2xl relative p-6">
+        <DialogContent className="sm:max-w-md bg-transparent border border-slate-100 text-white rounded-3xl overflow-hidden shadow-2xl relative p-6">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
 
           <DialogHeader>
@@ -251,10 +251,10 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
           </DialogHeader>
           <div className="space-y-6 py-4 relative z-10">
             <div className="space-y-2">
-              <label className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+              <label className="block text-[10px] uppercase font-bold text-[rgb(var(--text-muted))] tracking-wider">
                 How is your energy level?
               </label>
-              <div className="flex gap-3 justify-center py-2 bg-slate-900/40 rounded-2xl border border-slate-900">
+              <div className="flex gap-3 justify-center py-2 bg-[rgb(var(--surface-0))]/60 rounded-2xl border border-slate-100">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
@@ -269,10 +269,10 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+              <label className="block text-[10px] uppercase font-bold text-[rgb(var(--text-muted))] tracking-wider">
                 New Confidence Score ({activeBlock.topic.name})
               </label>
-              <div className="p-4 bg-slate-900/40 rounded-2xl border border-slate-900 space-y-3">
+              <div className="p-4 bg-[rgb(var(--surface-0))]/60 rounded-2xl border border-slate-100 space-y-3">
                 <Slider
                   defaultValue={[confidenceScore]}
                   max={10}
@@ -289,7 +289,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+              <label className="block text-[10px] uppercase font-bold text-[rgb(var(--text-muted))] tracking-wider">
                 Study Notes (Optional)
               </label>
               <input
@@ -297,7 +297,7 @@ export default function FocusTimer({ onSessionComplete }: FocusTimerProps) {
                 placeholder="What did you learn or struggle with?"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
+                className="w-full bg-[rgb(var(--surface-0))]/80 border border-slate-200 rounded-xl px-4 py-3 text-sm text-[rgb(var(--text-primary))] placeholder-slate-650 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
               />
             </div>
 

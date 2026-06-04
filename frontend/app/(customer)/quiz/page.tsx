@@ -74,23 +74,23 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-transparent text-[rgb(var(--text-primary))] p-4 md:p-8 relative overflow-hidden">
       {/* Visual background glows */}
       <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto space-y-8 relative z-10">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/50 pb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200/50 pb-6">
           <div>
             <h1 className="text-3xl font-black bg-gradient-to-b from-white to-slate-300 bg-clip-text text-transparent tracking-tight">
               Adaptive Assessment
             </h1>
-            <p className="text-slate-400 text-sm mt-1">Calibrating topic mastery scores in real-time</p>
+            <p className="text-[rgb(var(--text-muted))] text-sm mt-1">Calibrating topic mastery scores in real-time</p>
           </div>
           <Button 
             variant="outline" 
             onClick={() => router.push('/dashboard')}
-            className="border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 rounded-xl"
+            className="border-slate-200 bg-[rgb(var(--surface-0))]/60 hover:bg-slate-100/80 text-[rgb(var(--text-secondary))] rounded-xl"
           >
             Dashboard
           </Button>

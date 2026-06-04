@@ -97,9 +97,9 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
 
       {/* Chat Window Panel */}
       {isOpen && (
-        <div className="w-80 md:w-96 h-[500px] bg-slate-900/90 backdrop-blur-2xl border border-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden relative animate-in slide-in-from-bottom-5 duration-300">
+        <div className="w-80 md:w-96 h-[500px] bg-[rgb(var(--surface-0))]/90 backdrop-blur-2xl border border-slate-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden relative animate-in slide-in-from-bottom-5 duration-300">
           {/* Top Header */}
-          <div className="p-4 bg-slate-950/60 border-b border-slate-800/80 flex justify-between items-center">
+          <div className="p-4 bg-transparent/60 border-b border-slate-200/80 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-sky-400 flex items-center justify-center text-white">
                 <GraduationCap className="w-4 h-4" />
@@ -111,7 +111,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-lg text-[rgb(var(--text-muted))] hover:text-slate-900 hover:bg-slate-100 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -131,7 +131,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
                   <div
                     className={`max-w-[75%] rounded-2xl px-4 py-3 text-xs leading-relaxed whitespace-pre-wrap ${
                       isBot 
-                        ? 'bg-slate-800/40 text-slate-200 border border-slate-800/50 rounded-tl-none' 
+                        ? 'bg-slate-800/40 text-[rgb(var(--text-primary))] border border-slate-200/50 rounded-tl-none' 
                         : 'bg-indigo-600 text-white rounded-tr-none shadow-md shadow-indigo-600/10'
                     }`}
                   >
@@ -151,7 +151,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
                 <div className="h-7 w-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5">
                   <Bot className="w-4 h-4" />
                 </div>
-                <div className="bg-slate-800/40 border border-slate-800/50 rounded-2xl rounded-tl-none px-4 py-3 text-slate-400 flex items-center gap-1">
+                <div className="bg-slate-800/40 border border-slate-200/50 rounded-2xl rounded-tl-none px-4 py-3 text-[rgb(var(--text-muted))] flex items-center gap-1">
                   <span className="h-1.5 w-1.5 bg-indigo-400 rounded-full animate-bounce"></span>
                   <span className="h-1.5 w-1.5 bg-indigo-400 rounded-full animate-bounce delay-100"></span>
                   <span className="h-1.5 w-1.5 bg-indigo-400 rounded-full animate-bounce delay-200"></span>
@@ -162,7 +162,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
           </div>
 
           {/* Bottom Settings & Input */}
-          <div className="p-4 bg-slate-950/40 border-t border-slate-800 space-y-3">
+          <div className="p-4 bg-transparent/40 border-t border-slate-200 space-y-3">
             {/* ELI5 Toggle */}
             <div className="flex justify-between items-center">
               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider flex items-center gap-1">
@@ -174,7 +174,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
                 className={`text-[10px] font-bold px-2 py-0.5 rounded transition-all border ${
                   isELI5 
                     ? 'bg-indigo-600/20 border-indigo-500 text-indigo-400' 
-                    : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-400'
+                    : 'bg-[rgb(var(--surface-0))] border-slate-200 text-slate-500 hover:text-[rgb(var(--text-muted))]'
                 }`}
               >
                 {isELI5 ? 'Explain Like I\'m 5 👶' : 'Standard Tutor 🎓'}
@@ -188,7 +188,7 @@ export default function AIAssistant({ topicId, topicName }: AIAssistantProps) {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask study questions..."
-                className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 text-xs text-white placeholder-slate-650 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50"
+                className="flex-1 bg-[rgb(var(--surface-0))] border border-slate-200 rounded-xl px-3 text-xs text-white placeholder-slate-650 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50"
                 disabled={loading}
               />
               <Button

@@ -20,7 +20,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen flex items-center justify-center bg-transparent p-4 relative overflow-hidden font-sans">
       {/* Dynamic Background Mesh & Glows */}
       <div className="absolute top-[-10%] left-[-10%] right-[-10%] bottom-[-10%] pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-transparent to-transparent"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none"></div>
@@ -33,22 +33,22 @@ export default function LoginPage() {
             <span className="font-extrabold text-white text-2xl tracking-tighter">E</span>
           </div>
           <div>
-            <h1 className="text-4xl font-black tracking-tight bg-gradient-to-b from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-black tracking-tight bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 bg-clip-text text-transparent">
               ExamEve
             </h1>
-            <p className="text-sm text-slate-400 font-medium tracking-wide mt-1">
+            <p className="text-sm text-[rgb(var(--text-muted))] font-medium tracking-wide mt-1">
               AI-Powered Preparation Optimizer
             </p>
           </div>
         </div>
 
         {/* Login Card */}
-        <div className="bg-slate-900/40 backdrop-blur-2xl border border-slate-800/80 rounded-3xl p-8 relative overflow-hidden shadow-2xl">
+        <div className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl border border-slate-200/80 rounded-3xl p-8 relative overflow-hidden shadow-2xl">
           {/* Top border neon line */}
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
 
           <div className="text-center mb-8">
-            <h2 className="text-xl font-bold text-white tracking-tight">Welcome Back</h2>
+            <h2 className="text-xl font-bold text-[rgb(var(--text-primary))] tracking-tight">Welcome Back</h2>
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
               Login to access your adaptive study plans, flashcards, and real-time stress interventions.
             </p>
@@ -71,17 +71,17 @@ export default function LoginPage() {
 
             <div className="relative py-2">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-800"></div>
+                <div className="w-full border-t border-slate-200"></div>
               </div>
               <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-widest">
-                <span className="px-3 bg-slate-950/80 rounded-full text-slate-500">Or continue with</span>
+                <span className="px-3 bg-transparent/80 rounded-full text-slate-500">Or continue with</span>
               </div>
             </div>
 
             <Button
               variant="outline"
               onClick={() => router.push('/onboarding?demo=true')}
-              className="w-full h-13 rounded-xl border-slate-800 bg-slate-900/20 hover:bg-slate-800/60 text-slate-300 font-semibold flex items-center justify-center gap-2 transition-transform active:scale-[0.99]"
+              className="w-full h-13 rounded-xl border-slate-200 bg-[rgb(var(--surface-0))]/20 hover:bg-slate-100/60 text-[rgb(var(--text-secondary))] font-semibold flex items-center justify-center gap-2 transition-transform active:scale-[0.99]"
             >
               Explore Demo Mode <ArrowRight className="w-4 h-4 text-indigo-400" />
             </Button>

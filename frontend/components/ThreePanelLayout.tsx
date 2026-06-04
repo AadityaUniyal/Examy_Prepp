@@ -25,7 +25,7 @@ export default function ThreePanelLayout({
   }
 
   return (
-    <div className="flex w-full min-height-screen bg-slate-950 text-white overflow-hidden relative">
+    <div className="flex w-full min-height-screen bg-transparent text-white overflow-hidden relative">
       {/* LEFT PANEL */}
       <motion.div
         animate={{
@@ -33,12 +33,12 @@ export default function ThreePanelLayout({
           opacity: 1
         }}
         transition={panelTransition}
-        className="bg-slate-900/80 border-r border-slate-800/80 flex-shrink-0 flex flex-col relative overflow-hidden"
+        className="bg-[rgb(var(--surface-0))]/80 border-r border-slate-200/80 flex-shrink-0 flex flex-col relative overflow-hidden"
       >
         <div className="flex-1 overflow-y-auto">
           {leftCollapsed ? (
             <div className="flex flex-col items-center py-4 gap-4">
-              <button onClick={() => setLeftCollapsed(false)} className="p-2 hover:bg-slate-800 rounded-lg text-slate-400">
+              <button onClick={() => setLeftCollapsed(false)} className="p-2 hover:bg-slate-100 rounded-lg text-[rgb(var(--text-muted))]">
                 <Menu className="w-5 h-5" />
               </button>
             </div>
@@ -51,7 +51,7 @@ export default function ThreePanelLayout({
         {!leftCollapsed && (
           <button
             onClick={() => setLeftCollapsed(true)}
-            className="absolute top-1/2 -right-3 -translate-y-1/2 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-300 w-6 h-6 rounded-full flex items-center justify-center z-20 shadow-md"
+            className="absolute top-1/2 -right-3 -translate-y-1/2 bg-slate-800 border border-slate-200 hover:bg-slate-700 text-[rgb(var(--text-secondary))] w-6 h-6 rounded-full flex items-center justify-center z-20 shadow-md"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -59,13 +59,13 @@ export default function ThreePanelLayout({
       </motion.div>
 
       {/* CENTER PANEL */}
-      <div className="flex-1 flex flex-col min-w-0 bg-slate-950 relative overflow-y-auto">
+      <div className="flex-1 flex flex-col min-w-0 bg-transparent relative overflow-y-auto">
         {/* Mobile menu bar if left is collapsed */}
         {leftCollapsed && (
-          <div className="p-3 border-b border-slate-900 bg-slate-950 flex items-center gap-2">
+          <div className="p-3 border-b border-slate-100 bg-transparent flex items-center gap-2">
             <button
               onClick={() => setLeftCollapsed(false)}
-              className="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400"
+              className="p-1.5 hover:bg-slate-100 rounded-lg text-[rgb(var(--text-muted))]"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -82,14 +82,14 @@ export default function ThreePanelLayout({
           opacity: rightCollapsed ? 0 : 1
         }}
         transition={panelTransition}
-        className="bg-slate-900/40 border-l border-slate-800/80 flex-shrink-0 flex flex-col relative overflow-hidden"
+        className="bg-[rgb(var(--surface-0))]/60 border-l border-slate-200/80 flex-shrink-0 flex flex-col relative overflow-hidden"
       >
         <div className="flex-1 overflow-y-auto p-4">{rightPanel}</div>
 
         {/* Right Collapse Button Toggle */}
         <button
           onClick={() => setRightCollapsed(!rightCollapsed)}
-          className="absolute top-1/2 -left-3 -translate-y-1/2 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-300 w-6 h-6 rounded-full flex items-center justify-center z-20 shadow-md"
+          className="absolute top-1/2 -left-3 -translate-y-1/2 bg-slate-800 border border-slate-200 hover:bg-slate-700 text-[rgb(var(--text-secondary))] w-6 h-6 rounded-full flex items-center justify-center z-20 shadow-md"
         >
           {rightCollapsed ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </button>

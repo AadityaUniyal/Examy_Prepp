@@ -42,11 +42,11 @@ export default function SlidingPillTabs({
   return (
     <div
       ref={containerRef}
-      className="relative flex p-1 bg-slate-950 border border-slate-900 rounded-xl overflow-hidden"
+      className="relative flex p-1 bg-transparent border border-slate-100 rounded-xl overflow-hidden"
     >
       {/* Sliding Highlight Pill */}
       <div
-        className="absolute top-1 left-0 bg-slate-800 border border-slate-700/60 rounded-lg transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        className="absolute top-1 left-0 bg-slate-800 border border-slate-200/60 rounded-lg transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]"
         style={highlightStyle}
       />
 
@@ -56,7 +56,7 @@ export default function SlidingPillTabs({
           data-tab-id={tab.id}
           onClick={() => onChange(tab.id)}
           className={`relative z-10 px-4 py-2 text-xs font-bold transition-colors duration-150 rounded-lg ${
-            activeTab === tab.id ? 'text-white' : 'text-slate-500 hover:text-slate-300'
+            activeTab === tab.id ? 'text-white' : 'text-slate-500 hover:text-[rgb(var(--text-secondary))]'
           }`}
         >
           {tab.label}

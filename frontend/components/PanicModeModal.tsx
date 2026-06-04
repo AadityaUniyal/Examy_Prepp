@@ -204,7 +204,7 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
         }
       case 'Hold (Out)':
         return {
-          bg: 'bg-slate-700/25 border-slate-500 text-slate-400',
+          bg: 'bg-slate-700/25 border-slate-500 text-[rgb(var(--text-muted))]',
           radial: 'from-slate-600/20 via-slate-700/5 to-transparent'
         }
     }
@@ -244,7 +244,7 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={(val) => !val && handlePanicComplete()}>
-      <DialogContent className="sm:max-w-xl bg-slate-950 border-slate-900 text-white rounded-3xl overflow-hidden shadow-2xl relative">
+      <DialogContent className="sm:max-w-xl bg-transparent border-slate-100 text-white rounded-3xl overflow-hidden shadow-2xl relative">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-500 via-indigo-500 to-sky-400"></div>
 
         {/* Ambient background glow matching phase */}
@@ -257,7 +257,7 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
         </DialogHeader>
 
         <div className="flex flex-col items-center py-6 relative z-10">
-          <p className="text-slate-400 text-xs text-center mb-6 max-w-sm leading-relaxed">
+          <p className="text-[rgb(var(--text-muted))] text-xs text-center mb-6 max-w-sm leading-relaxed">
             Standard box technique used by professionals to lower heart rate and restore mental clarity in 60 seconds.
           </p>
 
@@ -288,8 +288,8 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
           </div>
 
           {/* Controls Bar */}
-          <div className="flex gap-4 items-center justify-between w-full p-3 bg-slate-900/60 border border-slate-900 rounded-2xl mb-6">
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider pl-1 flex items-center gap-1.5">
+          <div className="flex gap-4 items-center justify-between w-full p-3 bg-[rgb(var(--surface-0))]/80 border border-slate-100 rounded-2xl mb-6">
+            <span className="text-[10px] text-[rgb(var(--text-muted))] font-bold uppercase tracking-wider pl-1 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> Ambient Calm Wave
             </span>
             <button
@@ -297,7 +297,7 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
               className={`p-2 rounded-lg border flex items-center gap-2 text-xs font-bold transition-all ${
                 soundEnabled 
                   ? 'bg-indigo-600/20 border-indigo-500 text-indigo-400' 
-                  : 'bg-slate-950 border-slate-800 text-slate-500 hover:text-slate-400'
+                  : 'bg-transparent border-slate-200 text-slate-500 hover:text-[rgb(var(--text-muted))]'
               }`}
             >
               {soundEnabled ? (
@@ -314,7 +314,7 @@ export default function PanicModeModal({ open, onClose }: PanicModeModalProps) {
 
           {/* Next Focus Step suggestion */}
           {priorityBlock && (
-            <div className="w-full bg-slate-900/40 border border-slate-900 rounded-2xl p-4 mb-6 text-left">
+            <div className="w-full bg-[rgb(var(--surface-0))]/60 border border-slate-100 rounded-2xl p-4 mb-6 text-left">
               <span className="text-[10px] font-extrabold text-indigo-400 uppercase tracking-widest block mb-1">
                 Your Single Focus Next
               </span>

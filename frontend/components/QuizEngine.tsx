@@ -60,7 +60,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
   if (finished) {
     const percent = Math.round((correctAnswersCount / questions.length) * 100)
     return (
-      <Card className="max-w-xl mx-auto shadow-2xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-2xl rounded-3xl overflow-hidden relative p-8 text-center space-y-6">
+      <Card className="max-w-xl mx-auto shadow-2xl border border-slate-200/80 bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl rounded-3xl overflow-hidden relative p-8 text-center space-y-6">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
         
         <div className="mx-auto h-20 w-20 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-2">
@@ -97,19 +97,19 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
   const progressPercent = Math.round(((currentIdx + 1) / questions.length) * 100)
 
   return (
-    <Card className="max-w-2xl mx-auto shadow-2xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-2xl rounded-3xl overflow-hidden relative">
+    <Card className="max-w-2xl mx-auto shadow-2xl border border-slate-200/80 bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl rounded-3xl overflow-hidden relative">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
       
       {/* Progress timeline bar */}
-      <div className="absolute top-[2px] left-0 right-0 h-1 bg-slate-950">
+      <div className="absolute top-[2px] left-0 right-0 h-1 bg-transparent">
         <div 
           className="bg-indigo-500 h-full transition-all duration-300"
           style={{ width: `${progressPercent}%` }}
         />
       </div>
 
-      <CardHeader className="border-b border-slate-800 bg-slate-950/20 py-4 pt-6">
-        <CardTitle className="text-xs font-bold flex items-center justify-between text-slate-400">
+      <CardHeader className="border-b border-slate-200 bg-transparent/20 py-4 pt-6">
+        <CardTitle className="text-xs font-bold flex items-center justify-between text-[rgb(var(--text-muted))]">
           <span className="truncate max-w-[400px] uppercase tracking-wider flex items-center gap-1.5">
             <HelpCircle className="w-4 h-4 text-indigo-400" /> Quiz: {topicName}
           </span>
@@ -129,7 +129,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
             const isSelected = selectedIdx === idx
             const isCorrect = currentQuestion.answerIndex === idx
             
-            let btnClass = 'w-full text-left justify-start h-auto py-3.5 px-4 text-sm font-semibold border-slate-800 bg-slate-950/30 text-slate-350 hover:bg-slate-800/40 hover:text-white transition-all rounded-xl duration-150 active:scale-[0.99] border flex items-center gap-3'
+            let btnClass = 'w-full text-left justify-start h-auto py-3.5 px-4 text-sm font-semibold border-slate-200 bg-transparent/30 text-slate-350 hover:bg-slate-100/40 hover:text-slate-900 transition-all rounded-xl duration-150 active:scale-[0.99] border flex items-center gap-3'
 
             if (selectedIdx !== null) {
               if (isCorrect) {
@@ -137,7 +137,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
               } else if (isSelected) {
                 btnClass = 'w-full text-left justify-start h-auto py-3.5 px-4 text-sm font-bold bg-rose-500/10 text-rose-450 border-rose-500/25 pointer-events-none rounded-xl border flex items-center gap-3'
               } else {
-                btnClass = 'w-full text-left justify-start h-auto py-3.5 px-4 text-sm font-medium text-slate-700 border-slate-900 pointer-events-none rounded-xl border flex items-center gap-3'
+                btnClass = 'w-full text-left justify-start h-auto py-3.5 px-4 text-sm font-medium text-slate-700 border-slate-100 pointer-events-none rounded-xl border flex items-center gap-3'
               }
             }
 
@@ -148,7 +148,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
                 onClick={() => handleSelectOption(idx)}
                 disabled={selectedIdx !== null}
               >
-                <span className="font-extrabold text-[11px] opacity-40 bg-slate-950 h-6 w-6 rounded-lg flex items-center justify-center shrink-0 border border-slate-800">
+                <span className="font-extrabold text-[11px] opacity-40 bg-transparent h-6 w-6 rounded-lg flex items-center justify-center shrink-0 border border-slate-200">
                   {String.fromCharCode(65 + idx)}
                 </span>
                 <span>{opt}</span>
@@ -162,7 +162,7 @@ export default function QuizEngine({ topicName, questions, onSubmitQuiz }: QuizE
             <span className="text-[10px] font-extrabold text-indigo-400 uppercase tracking-widest flex items-center gap-1">
               <CheckCircle2 className="w-3.5 h-3.5" /> Explanation
             </span>
-            <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-wrap">
+            <p className="text-xs text-[rgb(var(--text-secondary))] leading-relaxed whitespace-pre-wrap">
               {currentQuestion.explanation}
             </p>
           </div>

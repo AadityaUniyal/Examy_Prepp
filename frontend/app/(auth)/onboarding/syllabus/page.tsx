@@ -155,12 +155,12 @@ function SyllabusPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-transparent text-[rgb(var(--text-primary))] flex items-center justify-center p-4 relative overflow-hidden font-sans">
       {/* Visual background glows */}
       <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none"></div>
 
-      <Card className="w-full max-w-2xl bg-slate-900/40 backdrop-blur-2xl border border-slate-800/80 rounded-3xl p-6 relative overflow-hidden shadow-2xl">
+      <Card className="w-full max-w-2xl bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl border border-slate-200/80 rounded-3xl p-6 relative overflow-hidden shadow-2xl">
         {/* Glowing border line */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
 
@@ -168,7 +168,7 @@ function SyllabusPageContent() {
           <CardTitle className="text-2xl font-black bg-gradient-to-b from-white to-slate-300 bg-clip-text text-transparent">
             Syllabus Configuration
           </CardTitle>
-          <CardDescription className="text-slate-400 text-xs">
+          <CardDescription className="text-[rgb(var(--text-muted))] text-xs">
             Upload a syllabus PDF, select a library template, or enter study topics manually.
           </CardDescription>
         </CardHeader>
@@ -177,35 +177,35 @@ function SyllabusPageContent() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div
-                  className="bg-slate-950/40 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
+                  className="bg-transparent/40 border border-slate-200 hover:border-indigo-500/50 hover:bg-transparent/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
                   onClick={() => setMode('template')}
                 >
                   <div className="h-10 w-10 mx-auto rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
                     <Library className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-sm text-slate-200">Template Library</h3>
+                  <h3 className="font-bold text-sm text-[rgb(var(--text-primary))]">Template Library</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed">Choose from pre-defined standard exams</p>
                 </div>
 
                 <div
-                  className="bg-slate-950/40 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
+                  className="bg-transparent/40 border border-slate-200 hover:border-emerald-500/50 hover:bg-transparent/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
                   onClick={() => setMode('manual')}
                 >
                   <div className="h-10 w-10 mx-auto rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
                     <PlusCircle className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-sm text-slate-200">Manual Entry</h3>
+                  <h3 className="font-bold text-sm text-[rgb(var(--text-primary))]">Manual Entry</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed">Input your topics and details manually</p>
                 </div>
 
                 <div
-                  className="bg-slate-950/40 border border-slate-800 hover:border-sky-500/50 hover:bg-slate-950/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
+                  className="bg-transparent/40 border border-slate-200 hover:border-sky-500/50 hover:bg-transparent/80 text-center space-y-3 cursor-pointer p-5 rounded-2xl transition-all duration-200 premium-card-hover"
                   onClick={() => setMode('pdf')}
                 >
                   <div className="h-10 w-10 mx-auto rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400">
                     <UploadCloud className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-sm text-slate-200">AI PDF Extract</h3>
+                  <h3 className="font-bold text-sm text-[rgb(var(--text-primary))]">AI PDF Extract</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed">Automatically extract topics from PDF file</p>
                 </div>
               </div>
@@ -213,7 +213,7 @@ function SyllabusPageContent() {
                 <Button 
                   variant="outline" 
                   onClick={() => router.back()}
-                  className="border-slate-800 bg-slate-900/20 hover:bg-slate-800/60 text-slate-350 rounded-xl"
+                  className="border-slate-200 bg-[rgb(var(--surface-0))]/20 hover:bg-slate-100/60 text-slate-350 rounded-xl"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" /> Back
                 </Button>
@@ -223,7 +223,7 @@ function SyllabusPageContent() {
 
           {mode === 'pdf' && (
             <div className="space-y-6 py-4 text-center">
-              <div className="max-w-md mx-auto p-8 border-2 border-dashed border-slate-800 bg-slate-950/20 rounded-2xl flex flex-col items-center justify-center space-y-4">
+              <div className="max-w-md mx-auto p-8 border-2 border-dashed border-slate-200 bg-transparent/20 rounded-2xl flex flex-col items-center justify-center space-y-4">
                 <div className="h-14 w-14 rounded-2xl bg-sky-500/10 flex items-center justify-center text-sky-400 mb-2">
                   <UploadCloud className="w-7 h-7" />
                 </div>
@@ -250,7 +250,7 @@ function SyllabusPageContent() {
                 <Button 
                   variant="outline" 
                   onClick={() => setMode('options')}
-                  className="border-slate-800 bg-slate-900/20 hover:bg-slate-800/60 text-slate-350 rounded-xl"
+                  className="border-slate-200 bg-[rgb(var(--surface-0))]/20 hover:bg-slate-100/60 text-slate-350 rounded-xl"
                 >
                   Back
                 </Button>
@@ -260,16 +260,16 @@ function SyllabusPageContent() {
 
           {mode === 'template' && (
             <div className="space-y-4">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Select standard syllabus template</h3>
+              <h3 className="text-xs font-bold text-[rgb(var(--text-muted))] uppercase tracking-wider mb-2">Select standard syllabus template</h3>
               <div className="space-y-2.5">
                 {templates.map((tpl, i) => (
                   <div
                     key={i}
-                    className="p-4 bg-slate-950/20 border border-slate-800 hover:border-indigo-500/30 rounded-2xl cursor-pointer flex justify-between items-center transition-all duration-150 hover:bg-slate-950/50"
+                    className="p-4 bg-transparent/20 border border-slate-200 hover:border-indigo-500/30 rounded-2xl cursor-pointer flex justify-between items-center transition-all duration-150 hover:bg-transparent/50"
                     onClick={() => handleSelectTemplate(i)}
                   >
                     <div>
-                      <h4 className="font-bold text-sm text-slate-200">{tpl.name}</h4>
+                      <h4 className="font-bold text-sm text-[rgb(var(--text-primary))]">{tpl.name}</h4>
                       <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">{tpl.topics.length} core topics included</p>
                     </div>
                     <Button variant="ghost" className="text-indigo-400 hover:text-indigo-300 text-xs font-bold hover:bg-transparent">Select →</Button>
@@ -280,7 +280,7 @@ function SyllabusPageContent() {
                 <Button 
                   variant="outline" 
                   onClick={() => setMode('options')}
-                  className="border-slate-800 bg-slate-900/20 hover:bg-slate-800/60 text-slate-350 rounded-xl"
+                  className="border-slate-200 bg-[rgb(var(--surface-0))]/20 hover:bg-slate-100/60 text-slate-350 rounded-xl"
                 >
                   Back
                 </Button>
@@ -291,7 +291,7 @@ function SyllabusPageContent() {
           {mode === 'manual' && (
             <div className="space-y-6">
               {/* Form to add a new topic */}
-              <div className="p-5 bg-slate-950/40 border border-slate-800 rounded-2xl space-y-4">
+              <div className="p-5 bg-transparent/40 border border-slate-200 rounded-2xl space-y-4">
                 <h4 className="text-xs font-bold text-slate-350 uppercase tracking-wider flex items-center gap-1.5">
                   <PlusCircle className="w-4 h-4 text-emerald-400" /> Add New Topic
                 </h4>
@@ -301,7 +301,7 @@ function SyllabusPageContent() {
                     placeholder="e.g., Photosynthesis"
                     value={newTopic.name}
                     onChange={(e) => setNewTopic({ ...newTopic, name: e.target.value })}
-                    className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-transparent/80 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[rgb(var(--text-primary))] placeholder-slate-650 focus:outline-none focus:border-indigo-500"
                   />
                   <input
                     type="number"
@@ -310,7 +310,7 @@ function SyllabusPageContent() {
                     max="100"
                     value={newTopic.weightage || ''}
                     onChange={(e) => setNewTopic({ ...newTopic, weightage: parseInt(e.target.value) || 0 })}
-                    className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-transparent/80 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[rgb(var(--text-primary))] placeholder-slate-650 focus:outline-none focus:border-indigo-500"
                   />
                   <input
                     type="number"
@@ -318,13 +318,13 @@ function SyllabusPageContent() {
                     min="1"
                     value={newTopic.estimatedHours || ''}
                     onChange={(e) => setNewTopic({ ...newTopic, estimatedHours: parseInt(e.target.value) || 0 })}
-                    className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-transparent/80 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[rgb(var(--text-primary))] placeholder-slate-650 focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <Button 
                   onClick={handleAddTopic} 
                   size="sm" 
-                  className="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-200 font-semibold px-4 rounded-lg"
+                  className="bg-[rgb(var(--surface-0))] border border-slate-200 hover:bg-slate-100 text-[rgb(var(--text-primary))] font-semibold px-4 rounded-lg"
                 >
                   Add Topic to List
                 </Button>
@@ -332,16 +332,16 @@ function SyllabusPageContent() {
 
               {/* Added topics list with confidence ratings */}
               <div className="space-y-4">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Topics & Initial Confidence</h3>
+                <h3 className="text-xs font-bold text-[rgb(var(--text-muted))] uppercase tracking-wider">Topics & Initial Confidence</h3>
                 {topics.length === 0 ? (
                   <p className="text-xs text-slate-500 italic py-4">No topics added yet. Add some above or use templates.</p>
                 ) : (
                   <div className="space-y-3">
                     {topics.map((t, idx) => (
-                      <div key={idx} className="p-4 border border-slate-800 rounded-2xl space-y-3.5 bg-slate-950/20">
+                      <div key={idx} className="p-4 border border-slate-200 rounded-2xl space-y-3.5 bg-transparent/20">
                         <div className="flex justify-between items-center">
                           <div>
-                            <h5 className="font-bold text-sm text-slate-200">{t.name}</h5>
+                            <h5 className="font-bold text-sm text-[rgb(var(--text-primary))]">{t.name}</h5>
                             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
                               Weightage: {t.weightage}% | Est. Hours: {t.estimatedHours} hrs
                             </p>
@@ -356,7 +356,7 @@ function SyllabusPageContent() {
                           </Button>
                         </div>
                         <div className="space-y-2">
-                          <div className="flex justify-between text-xs text-slate-400 font-semibold">
+                          <div className="flex justify-between text-xs text-[rgb(var(--text-muted))] font-semibold">
                             <span>How well do you know this topic right now?</span>
                             <span className="text-indigo-400 font-bold">{t.confidence}/10</span>
                           </div>
@@ -374,11 +374,11 @@ function SyllabusPageContent() {
                 )}
               </div>
 
-              <div className="flex justify-between mt-8 border-t border-slate-800 pt-6">
+              <div className="flex justify-between mt-8 border-t border-slate-200 pt-6">
                 <Button 
                   variant="outline" 
                   onClick={() => setMode('options')}
-                  className="border-slate-800 bg-slate-900/20 hover:bg-slate-800/60 text-slate-300 rounded-xl"
+                  className="border-slate-200 bg-[rgb(var(--surface-0))]/20 hover:bg-slate-100/60 text-[rgb(var(--text-secondary))] rounded-xl"
                 >
                   Back
                 </Button>
@@ -413,8 +413,8 @@ function SyllabusPageContent() {
 export default function SyllabusPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans">
-        <div className="text-slate-400 text-sm">Loading syllabus builder...</div>
+      <div className="min-h-screen bg-transparent text-[rgb(var(--text-primary))] flex items-center justify-center p-4 relative overflow-hidden font-sans">
+        <div className="text-[rgb(var(--text-muted))] text-sm">Loading syllabus builder...</div>
       </div>
     }>
       <SyllabusPageContent />

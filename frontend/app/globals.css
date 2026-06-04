@@ -25,20 +25,20 @@
     --accent-500: 6 182 212;
     --accent-600: 8 145 178;
 
-    /* ── Surface Colors (Dark Mode) ── */
-    --surface-0: 8 10 18;
-    --surface-50: 12 15 25;
-    --surface-100: 16 20 32;
-    --surface-200: 22 27 42;
-    --surface-300: 30 36 54;
-    --surface-400: 42 48 68;
-    --surface-500: 55 62 82;
+    /* ── Surface Colors (Light Mode) ── */
+    --surface-0: 255 255 255;
+    --surface-50: 248 250 252;
+    --surface-100: 241 245 249;
+    --surface-200: 226 232 240;
+    --surface-300: 203 213 225;
+    --surface-400: 148 163 184;
+    --surface-500: 100 116 139;
 
     /* ── Text Colors ── */
-    --text-primary: 240 242 255;
-    --text-secondary: 160 170 200;
-    --text-muted: 100 110 140;
-    --text-inverse: 8 10 18;
+    --text-primary: 15 23 42;
+    --text-secondary: 51 65 85;
+    --text-muted: 100 116 139;
+    --text-inverse: 240 242 255;
 
     /* ── Semantic Colors ── */
     --success-400: 74 222 128;
@@ -51,10 +51,10 @@
     --danger-600: 220 38 38;
 
     /* ── Glass & Effects ── */
-    --glass-bg: rgba(16, 20, 32, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.06);
-    --glass-highlight: rgba(255, 255, 255, 0.03);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    --glass-highlight: rgba(0, 0, 0, 0.01);
+    --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.04);
 
     /* ── Spacing Scale ── */
     --radius-sm: 8px;
@@ -76,25 +76,25 @@
     --duration-slow: 400ms;
   }
 
-  /* ── Light Mode Override ── */
-  .light {
-    --surface-0: 255 255 255;
-    --surface-50: 248 250 252;
-    --surface-100: 241 245 249;
-    --surface-200: 226 232 240;
-    --surface-300: 203 213 225;
-    --surface-400: 148 163 184;
-    --surface-500: 100 116 139;
+  /* ── Dark Mode Override ── */
+  .dark {
+    --surface-0: 8 10 18;
+    --surface-50: 12 15 25;
+    --surface-100: 16 20 32;
+    --surface-200: 22 27 42;
+    --surface-300: 30 36 54;
+    --surface-400: 42 48 68;
+    --surface-500: 55 62 82;
 
-    --text-primary: 15 23 42;
-    --text-secondary: 51 65 85;
-    --text-muted: 100 116 139;
-    --text-inverse: 240 242 255;
+    --text-primary: 240 242 255;
+    --text-secondary: 160 170 200;
+    --text-muted: 100 110 140;
+    --text-inverse: 8 10 18;
 
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(0, 0, 0, 0.06);
-    --glass-highlight: rgba(0, 0, 0, 0.02);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --glass-bg: rgba(16, 20, 32, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-highlight: rgba(255, 255, 255, 0.03);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
 
   /* ── Base Reset ── */

@@ -33,16 +33,16 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="p-8 space-y-8 animate-pulse text-slate-100">
+      <div className="p-8 space-y-8 animate-pulse text-[rgb(var(--text-primary))]">
         <div className="h-10 w-48 bg-slate-800 rounded-lg"></div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-32 bg-slate-800 rounded-2xl border border-slate-700/50"></div>
+            <div key={i} className="h-32 bg-slate-800 rounded-2xl border border-slate-200/50"></div>
           ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="h-96 bg-slate-800 rounded-2xl border border-slate-700/50"></div>
-          <div className="h-96 bg-slate-800 rounded-2xl border border-slate-700/50"></div>
+          <div className="h-96 bg-slate-800 rounded-2xl border border-slate-200/50"></div>
+          <div className="h-96 bg-slate-800 rounded-2xl border border-slate-200/50"></div>
         </div>
       </div>
     )
@@ -79,25 +79,25 @@ export default function AnalyticsPage() {
   const CHART_COLORS = ['#818cf8', '#60a5fa', '#34d399', '#f472b6', '#fbbf24', '#a78bfa']
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto text-slate-100 min-h-screen pb-16">
+    <div className="p-8 space-y-8 max-w-7xl mx-auto text-[rgb(var(--text-primary))] min-h-screen pb-16">
       {/* Title Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-sky-400 to-emerald-400 bg-clip-text text-transparent">
             Performance Analytics
           </h1>
-          <p className="text-slate-400 mt-1">Real-time learning stats, habits, and confidence analytics.</p>
+          <p className="text-[rgb(var(--text-muted))] mt-1">Real-time learning stats, habits, and confidence analytics.</p>
         </div>
-        <div className="flex bg-slate-800/80 backdrop-blur-md border border-slate-700/50 p-1 rounded-xl">
+        <div className="flex bg-slate-800/80 backdrop-blur-md border border-slate-200/50 p-1 rounded-xl">
           <button 
             onClick={() => setActiveTimeframe('week')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTimeframe === 'week' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTimeframe === 'week' ? 'bg-indigo-600 text-white shadow-lg' : 'text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text-primary))]'}`}
           >
             Weekly View
           </button>
           <button 
             onClick={() => setActiveTimeframe('month')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTimeframe === 'month' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTimeframe === 'month' ? 'bg-indigo-600 text-white shadow-lg' : 'text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text-primary))]'}`}
           >
             Monthly View
           </button>
@@ -106,42 +106,42 @@ export default function AnalyticsPage() {
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-700/50 transition-all group">
+        <div className="bg-[rgb(var(--surface-0))]/80 backdrop-blur-xl border border-slate-200/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-200/50 transition-all group">
           <div className="p-4 bg-indigo-500/10 rounded-xl text-indigo-400 group-hover:scale-110 transition-transform">
             <Clock className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Study Time</p>
+            <p className="text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Total Study Time</p>
             <h3 className="text-2xl font-bold mt-1 text-white">{analytics.totalStudyHours.toFixed(1)} hrs</h3>
           </div>
         </div>
 
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-700/50 transition-all group">
+        <div className="bg-[rgb(var(--surface-0))]/80 backdrop-blur-xl border border-slate-200/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-200/50 transition-all group">
           <div className="p-4 bg-sky-500/10 rounded-xl text-sky-400 group-hover:scale-110 transition-transform">
             <BookOpen className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sessions Logged</p>
+            <p className="text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Sessions Logged</p>
             <h3 className="text-2xl font-bold mt-1 text-white">{analytics.sessionsCompleted}</h3>
           </div>
         </div>
 
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-700/50 transition-all group">
+        <div className="bg-[rgb(var(--surface-0))]/80 backdrop-blur-xl border border-slate-200/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-200/50 transition-all group">
           <div className="p-4 bg-emerald-500/10 rounded-xl text-emerald-400 group-hover:scale-110 transition-transform">
             <Zap className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Avg Energy Score</p>
+            <p className="text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Avg Energy Score</p>
             <h3 className="text-2xl font-bold mt-1 text-white">{analytics.averageEnergy.toFixed(1)} / 10</h3>
           </div>
         </div>
 
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-700/50 transition-all group">
+        <div className="bg-[rgb(var(--surface-0))]/80 backdrop-blur-xl border border-slate-200/80 p-6 rounded-2xl shadow-xl flex items-center gap-4 hover:border-slate-200/50 transition-all group">
           <div className="p-4 bg-pink-500/10 rounded-xl text-pink-400 group-hover:scale-110 transition-transform">
             <Target className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Average Mastery</p>
+            <p className="text-xs font-semibold text-[rgb(var(--text-muted))] uppercase tracking-wider">Average Mastery</p>
             <h3 className="text-2xl font-bold mt-1 text-white">
               {analytics.topicBreakdown.length > 0 
                 ? (analytics.topicBreakdown.reduce((acc: number, t: { confidence: number }) => acc + t.confidence, 0) / analytics.topicBreakdown.length * 10).toFixed(0)
@@ -154,7 +154,7 @@ export default function AnalyticsPage() {
       {/* Main Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Study Hours Progression */}
-        <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+        <div className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-xl border border-slate-200 p-6 rounded-3xl shadow-xl space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
               <Clock className="w-5 h-5 text-indigo-400" /> Focus Progression
@@ -186,7 +186,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Topic Time Distribution */}
-        <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+        <div className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-xl border border-slate-200 p-6 rounded-3xl shadow-xl space-y-4">
           <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-sky-400" /> Study Distribution
           </h2>
@@ -225,7 +225,7 @@ export default function AnalyticsPage() {
       {/* Mastery and Confidence Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Topic Confidence radar */}
-        <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4 lg:col-span-2">
+        <div className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-xl border border-slate-200 p-6 rounded-3xl shadow-xl space-y-4 lg:col-span-2">
           <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
             <Target className="w-5 h-5 text-emerald-400" /> Topic Confidence Matrix
           </h2>
@@ -247,24 +247,24 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Actionable recommendations */}
-        <div className="bg-gradient-to-b from-slate-900/50 to-indigo-950/20 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-xl flex flex-col justify-between">
+        <div className="bg-gradient-to-b from-slate-900/50 to-indigo-950/20 backdrop-blur-xl border border-slate-200/80 p-6 rounded-3xl shadow-xl flex flex-col justify-between">
           <div className="space-y-4">
             <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
               <Zap className="w-5 h-5 text-amber-400" /> Smart Insights
             </h2>
             <div className="space-y-4 mt-2">
-              <div className="flex gap-3 bg-slate-800/60 p-4 rounded-xl border border-slate-800">
+              <div className="flex gap-3 bg-slate-800/60 p-4 rounded-xl border border-slate-200">
                 <Target className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-semibold text-white">Priority Target</h4>
-                  <p className="text-xs text-slate-400 mt-0.5">Focus study hours on low-mastery categories to balance coverage.</p>
+                  <p className="text-xs text-[rgb(var(--text-muted))] mt-0.5">Focus study hours on low-mastery categories to balance coverage.</p>
                 </div>
               </div>
-              <div className="flex gap-3 bg-slate-800/60 p-4 rounded-xl border border-slate-800">
+              <div className="flex gap-3 bg-slate-800/60 p-4 rounded-xl border border-slate-200">
                 <Clock className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-semibold text-white">Ideal Session Block</h4>
-                  <p className="text-xs text-slate-400 mt-0.5">Your energy peaks when doing study blocks between 45-60 mins.</p>
+                  <p className="text-xs text-[rgb(var(--text-muted))] mt-0.5">Your energy peaks when doing study blocks between 45-60 mins.</p>
                 </div>
               </div>
             </div>

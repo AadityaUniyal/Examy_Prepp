@@ -63,24 +63,24 @@ export default function CustomerLayout({
   ]
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-100 font-sans overflow-hidden">
+    <div className="flex min-h-screen bg-[rgb(var(--surface-50))] text-[rgb(var(--text-primary))] font-sans overflow-hidden">
       {/* Sidebar Navigation */}
-      <aside className="w-80 bg-slate-900/60 backdrop-blur-2xl border-r border-slate-800/80 flex flex-col justify-between p-6 shrink-0 relative">
+      <aside className="w-80 bg-white/80 backdrop-blur-2xl border-r border-slate-200/60 flex flex-col justify-between p-6 shrink-0 relative">
         {/* Glow indicator at the border */}
-        <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-indigo-500/20 via-sky-500/40 to-emerald-500/20"></div>
+        <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-indigo-500/10 via-indigo-500/20 to-emerald-500/10"></div>
         
         <div className="space-y-8">
           {/* Logo & Brand */}
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-sky-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/15">
               <span className="font-extrabold text-white text-xl">E</span>
             </div>
             <div>
-              <span className="font-black text-2xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">ExamEve</span>
-              <span className="block text-[10px] uppercase font-bold text-sky-400 tracking-wider">AI Optimizer</span>
+              <span className="font-black text-2xl tracking-tight bg-gradient-to-r from-slate-800 via-slate-900 to-slate-950 bg-clip-text text-transparent">ExamEve</span>
+              <span className="block text-[10px] uppercase font-bold text-indigo-600 tracking-wider">AI Optimizer</span>
             </div>
           </div>
-
+ 
           {/* Navigation Links */}
           <nav className="space-y-2">
             {navItems.map((item) => {
@@ -92,22 +92,22 @@ export default function CustomerLayout({
                   href={item.href}
                   className={`flex items-center gap-4 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all relative group ${
                     isActive 
-                      ? 'bg-indigo-600/10 text-indigo-300 border border-indigo-500/20 shadow-inner' 
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 border border-transparent'
+                      ? 'bg-indigo-50 text-indigo-600 border border-indigo-100/50 shadow-sm' 
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60 border border-transparent'
                   }`}
                 >
                   {/* Left indicator bubble */}
                   {isActive && (
-                    <div className="absolute left-0 top-3 bottom-3 w-1 bg-indigo-500 rounded-r"></div>
+                    <div className="absolute left-0 top-3 bottom-3 w-1 bg-indigo-600 rounded-r"></div>
                   )}
-                  <Icon className={`w-5 h-5 transition-transform group-hover:scale-105 ${isActive ? 'text-indigo-400' : 'text-slate-400 group-hover:text-slate-300'}`} />
+                  <Icon className={`w-5 h-5 transition-transform group-hover:scale-105 ${isActive ? 'text-indigo-600' : 'text-slate-500 group-hover:text-slate-700'}`} />
                   {item.name}
                 </Link>
               )
             })}
           </nav>
         </div>
-
+ 
         {/* Profile Footer */}
         <div className="space-y-4">
           {/* Panic trigger shortcut */}
@@ -116,25 +116,25 @@ export default function CustomerLayout({
               // Dispatch standard client-side event for PanicModeModal triggers
               window.dispatchEvent(new Event('trigger-panic-modal'))
             }}
-            className="w-full flex items-center justify-center gap-2.5 bg-red-500/10 hover:bg-red-500/15 text-red-400 font-bold text-sm py-3 px-4 rounded-xl border border-red-500/20 transition-all hover:scale-[1.02] shadow-lg hover:shadow-red-500/5 active:scale-95"
+            className="w-full flex items-center justify-center gap-2.5 bg-rose-500/10 hover:bg-rose-500/15 text-rose-600 font-bold text-sm py-3 px-4 rounded-xl border border-rose-200 transition-all hover:scale-[1.02] shadow-sm active:scale-95"
           >
             <ShieldAlert className="w-5 h-5" /> Panic Protocol
           </button>
-
-          <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+ 
+          <div className="pt-4 border-t border-slate-200 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300">
+              <div className="h-10 w-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700">
                 {session?.user?.name?.[0] || 'S'}
               </div>
               <div className="truncate max-w-[120px]">
-                <p className="text-sm font-semibold text-white truncate">{session?.user?.name || 'Student'}</p>
+                <p className="text-sm font-semibold text-slate-800 truncate">{session?.user?.name || 'Student'}</p>
                 <p className="text-xs text-slate-500 truncate">{session?.user?.email || 'student@exameve.com'}</p>
               </div>
             </div>
             
             <button 
               onClick={() => signOut({ callbackUrl: '/login' })}
-              className="p-2.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800/60 transition-colors"
+              className="p-2.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-slate-100 transition-colors"
               title="Sign Out"
             >
               <LogOut className="w-4 h-4" />
@@ -142,11 +142,11 @@ export default function CustomerLayout({
           </div>
         </div>
       </aside>
-
+ 
       {/* Main Contents Window */}
       <main className="flex-1 overflow-y-auto relative h-screen">
         {/* Soft atmospheric gradient behind content */}
-        <div className="absolute top-[-10%] left-[-10%] right-[-10%] bottom-[-10%] pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/10 via-transparent to-transparent"></div>
+        <div className="absolute top-[-10%] left-[-10%] right-[-10%] bottom-[-10%] pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-500/5 via-transparent to-transparent"></div>
         <div className="relative z-10">
           {children}
         </div>

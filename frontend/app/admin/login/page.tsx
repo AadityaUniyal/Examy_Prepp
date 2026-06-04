@@ -440,7 +440,7 @@ export default function AdminLoginPage() {
                   <div className="pb-2">
                     <button
                       onClick={() => handleCopy(authCode, 'totp')}
-                      className="w-full py-2 bg-black hover:bg-black/80 border border-[rgb(var(--surface-200))] text-[rgb(var(--text-secondary))] hover:text-white rounded-xl text-[10px] font-bold tracking-wide transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
+                      className="w-full py-2 bg-black hover:bg-black/80 border border-[rgb(var(--surface-200))] text-[rgb(var(--text-secondary))] hover:text-slate-900 rounded-xl text-[10px] font-bold tracking-wide transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
                     >
                       {copiedText === 'totp' ? (
                         <>Token Copied! <Check className="w-3.5 h-3.5 text-emerald-400" /></>

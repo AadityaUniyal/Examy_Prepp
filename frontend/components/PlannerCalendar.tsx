@@ -21,7 +21,7 @@ export default function PlannerCalendar({
 
   if (!plan || !plan.blocks || plan.blocks.length === 0) {
     return (
-      <div className="text-center py-16 text-slate-500 bg-slate-900/20 rounded-3xl border border-slate-900/60 shadow-xl">
+      <div className="text-center py-16 text-slate-500 bg-[rgb(var(--surface-0))]/20 rounded-3xl border border-slate-200/40 shadow-xl">
         No active study plan. Go to onboarding to create one!
       </div>
     )
@@ -84,10 +84,10 @@ export default function PlannerCalendar({
         }
       default:
         return {
-          border: 'border-slate-800 border-t-slate-700',
+          border: 'border-slate-200 border-t-slate-700',
           dot: 'bg-slate-700',
-          text: 'text-slate-400',
-          bg: 'bg-slate-900/10'
+          text: 'text-[rgb(var(--text-muted))]',
+          bg: 'bg-[rgb(var(--surface-0))]/10'
         }
     }
   }
@@ -97,12 +97,12 @@ export default function PlannerCalendar({
       {Object.entries(groupedDays).map(([dayLabel, blocks]) => (
         <div key={dayLabel} className="space-y-4">
           {/* Day Label Header */}
-          <div className="flex items-center gap-2.5 text-slate-400 border-b border-slate-900 pb-2">
+          <div className="flex items-center gap-2.5 text-[rgb(var(--text-muted))] border-b border-slate-100 pb-2">
             <CalendarIcon className="w-4 h-4 text-indigo-400" />
-            <h3 className="text-sm font-extrabold uppercase tracking-widest text-slate-200">
+            <h3 className="text-sm font-extrabold uppercase tracking-widest text-[rgb(var(--text-primary))]">
               {dayLabel}
             </h3>
-            <span className="text-[10px] font-bold bg-slate-900 text-slate-500 px-2 py-0.5 rounded-lg border border-slate-800">
+            <span className="text-[10px] font-bold bg-[rgb(var(--surface-0))] text-slate-500 px-2 py-0.5 rounded-lg border border-slate-200">
               {blocks.length} blocks scheduled
             </span>
           </div>
@@ -114,7 +114,7 @@ export default function PlannerCalendar({
               return (
                 <Card 
                   key={block.id}
-                  className={`bg-slate-900/20 backdrop-blur-2xl border ${styles.border} border-t-4 shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-slate-700 hover:-translate-y-0.5 flex flex-col justify-between`}
+                  className={`bg-[rgb(var(--surface-0))]/20 backdrop-blur-2xl border ${styles.border} border-t-4 shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-slate-200 hover:-translate-y-0.5 flex flex-col justify-between`}
                 >
                   <CardContent className="p-5 space-y-4 flex-1 flex flex-col justify-between">
                     <div className="space-y-2">
@@ -134,18 +134,18 @@ export default function PlannerCalendar({
                         {block.topic.name}
                       </h4>
                       <p className="text-[11px] text-slate-500 font-semibold">
-                        Duration: <span className="text-slate-400 font-bold">{block.durationMins}m</span>
+                        Duration: <span className="text-[rgb(var(--text-muted))] font-bold">{block.durationMins}m</span>
                         {block.topic.weightage > 0 && (
-                          <> | Weightage: <span className="text-slate-400 font-bold">{block.topic.weightage}%</span></>
+                          <> | Weightage: <span className="text-[rgb(var(--text-muted))] font-bold">{block.topic.weightage}%</span></>
                         )}
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-900/60 flex items-center justify-between gap-2 mt-4">
+                    <div className="pt-3 border-t border-slate-200/40 flex items-center justify-between gap-2 mt-4">
                       <span className={`text-[9px] font-bold px-2 py-0.5 rounded-md border tracking-wide uppercase ${
                         block.status === 'COMPLETED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                         block.status === 'SKIPPED' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
-                        'bg-slate-950 text-slate-400 border-slate-800'
+                        'bg-transparent text-[rgb(var(--text-muted))] border-slate-200'
                       }`}>
                         {block.status.toLowerCase()}
                       </span>
@@ -164,7 +164,7 @@ export default function PlannerCalendar({
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-slate-800 bg-slate-950/40 hover:bg-slate-800 text-slate-400 font-semibold rounded-lg h-7.5 px-2 text-[10px]"
+                            className="border-slate-200 bg-transparent/40 hover:bg-slate-100 text-[rgb(var(--text-muted))] font-semibold rounded-lg h-7.5 px-2 text-[10px]"
                             onClick={() => onSkipBlock(block.id)}
                           >
                             <Ban className="w-3 h-3" /> Skip

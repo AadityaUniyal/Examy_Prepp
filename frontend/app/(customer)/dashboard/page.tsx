@@ -121,7 +121,7 @@ export default function DashboardPage() {
 
   if (!dashboard) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center space-y-4">
           <svg className="animate-spin h-10 w-10 text-indigo-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -147,11 +147,11 @@ export default function DashboardPage() {
           <h1 className="text-4xl font-black text-white tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
             Welcome Back, {session?.user?.name || 'Student'}!
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-[rgb(var(--text-muted))] text-sm mt-1">
             Preparing for <span className="text-white font-semibold">{dashboard.exam.name}</span>
           </p>
         </div>
-        <div className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/60 border border-slate-900 text-xs font-bold text-slate-400 shadow-inner">
+        <div className="flex items-center gap-2 p-3 rounded-2xl bg-[rgb(var(--surface-0))]/80 border border-slate-100 text-xs font-bold text-[rgb(var(--text-muted))] shadow-inner">
           <Calendar className="w-4 h-4 text-indigo-400" />
           Exam Date: {new Date(dashboard.exam.examDate).toLocaleDateString()}
         </div>
@@ -161,7 +161,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         
         {/* Days Left Card */}
-        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between">
+        <Card className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl border-slate-200/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 to-sky-400"></div>
           <CardContent className="pt-6 h-full flex flex-col justify-between">
             <div className="flex justify-between items-start">
@@ -176,7 +176,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Readiness Score Card */}
-        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between">
+        <Card className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl border-slate-200/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-sky-400 to-emerald-500"></div>
           <CardContent className="pt-6 h-full flex flex-col justify-between">
             <div className="flex justify-between items-start">
@@ -212,7 +212,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Study Streak Card */}
-        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between group hover:scale-[1.01] transition-transform">
+        <Card className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl border-slate-200/80 shadow-2xl relative overflow-hidden h-40 flex flex-col justify-between group hover:scale-[1.01] transition-transform">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-500 to-rose-500 animate-pulse"></div>
           <CardContent className="pt-6 h-full flex flex-col justify-between">
             <div className="flex justify-between items-start">
@@ -241,14 +241,14 @@ export default function DashboardPage() {
         </Button>
         <Button 
           onClick={() => router.push('/quiz')}
-          className="h-14 rounded-2xl border-slate-800 bg-slate-900/30 hover:bg-slate-800/80 text-slate-200 font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          className="h-14 rounded-2xl border-slate-200 bg-[rgb(var(--surface-0))]/40 hover:bg-slate-100/80 text-[rgb(var(--text-primary))] font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           variant="outline"
         >
           Adaptive Quiz
         </Button>
         <Button 
           onClick={() => router.push('/flashcards')}
-          className="h-14 rounded-2xl border-slate-800 bg-slate-900/30 hover:bg-slate-800/80 text-slate-200 font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          className="h-14 rounded-2xl border-slate-200 bg-[rgb(var(--surface-0))]/40 hover:bg-slate-100/80 text-[rgb(var(--text-primary))] font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           variant="outline"
         >
           Spaced Flashcards
@@ -262,7 +262,7 @@ export default function DashboardPage() {
         </Button>
         <Button 
           onClick={() => router.push('/feedback')}
-          className="h-14 rounded-2xl border-slate-800 bg-slate-900/30 hover:bg-slate-800/80 text-slate-200 font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          className="h-14 rounded-2xl border-slate-200 bg-[rgb(var(--surface-0))]/40 hover:bg-slate-100/80 text-[rgb(var(--text-primary))] font-bold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           variant="outline"
         >
           Feedback Support
@@ -273,7 +273,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         {/* Today's Focus Card */}
-        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden">
+        <Card className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl border-slate-200/80 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
           <CardHeader>
             <CardTitle className="text-white font-black text-lg">Focus Priorities</CardTitle>
@@ -284,15 +284,15 @@ export default function DashboardPage() {
               {dashboard.topicsFocused.map((topic, idx) => (
                 <div 
                   key={idx} 
-                  className="flex items-center justify-between p-4 bg-slate-950/40 border border-slate-900/80 rounded-2xl hover:border-slate-800 hover:bg-slate-950/80 transition-all group cursor-pointer hover:scale-[1.01]"
+                  className="flex items-center justify-between p-4 bg-transparent/40 border border-slate-200/60 rounded-2xl hover:border-slate-200 hover:bg-transparent/80 transition-all group cursor-pointer hover:scale-[1.01]"
                   onClick={() => router.push('/planner')}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-xl bg-slate-900 flex items-center justify-center text-lg border border-slate-800">
+                    <div className="h-9 w-9 rounded-xl bg-[rgb(var(--surface-0))] flex items-center justify-center text-lg border border-slate-200">
                       {idx === 0 ? '🔥' : idx === 1 ? '⚡' : '💡'}
                     </div>
                     <div>
-                      <p className="font-bold text-slate-200 text-sm">{topic.name}</p>
+                      <p className="font-bold text-[rgb(var(--text-primary))] text-sm">{topic.name}</p>
                       <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Calibrated Confidence: {Math.round(topic.confidence * 100)}%</p>
                     </div>
                   </div>
@@ -309,7 +309,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Alerts & Reminders */}
-        <Card className="bg-slate-900/40 backdrop-blur-2xl border-slate-800/80 shadow-2xl relative overflow-hidden">
+        <Card className="bg-[rgb(var(--surface-0))]/60 backdrop-blur-2xl border-slate-200/80 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-500"></div>
           <CardHeader>
             <CardTitle className="text-white font-black text-lg">System Reminders</CardTitle>
@@ -324,13 +324,13 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 notifications.slice(0, 4).map((n, idx) => (
-                  <div key={idx} className="p-4 bg-slate-950/40 border border-slate-900/85 rounded-2xl flex justify-between items-center">
+                  <div key={idx} className="p-4 bg-transparent/40 border border-slate-100/85 rounded-2xl flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className="h-8 w-8 rounded-lg bg-indigo-500/5 border border-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0">
                         <AlertCircle className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-slate-300">{n.message}</p>
+                        <p className="text-xs font-medium text-[rgb(var(--text-secondary))]">{n.message}</p>
                         <span className="text-[9px] font-bold text-slate-500 block mt-1 uppercase tracking-wider">
                           {new Date(n.createdAt).toLocaleTimeString()}
                         </span>

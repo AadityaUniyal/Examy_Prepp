@@ -18,7 +18,7 @@ export default function PlannerTimeline({
 
   if (!plan || !plan.blocks || plan.blocks.length === 0) {
     return (
-      <div className="text-center py-16 text-slate-500 bg-slate-900/20 rounded-3xl border border-slate-900/60 shadow-xl">
+      <div className="text-center py-16 text-slate-500 bg-[rgb(var(--surface-0))]/20 rounded-3xl border border-slate-200/40 shadow-xl">
         No active study plan. Go to onboarding to create one!
       </div>
     )
@@ -63,25 +63,25 @@ export default function PlannerTimeline({
         return {
           border: 'border-l-slate-700',
           dot: 'bg-slate-700',
-          text: 'text-slate-400',
-          bg: 'bg-slate-950/20'
+          text: 'text-[rgb(var(--text-muted))]',
+          bg: 'bg-transparent/20'
         }
     }
   }
 
   return (
     <div className="space-y-4">
-      <div className="relative border-l border-slate-800/80 ml-6 pl-8 space-y-6">
+      <div className="relative border-l border-slate-200/80 ml-6 pl-8 space-y-6">
         {plan.blocks.map((block) => {
           const styles = getBlockTypeStyles(block.blockType)
           return (
             <div key={block.id} className="relative group">
               {/* Timeline Dot Indicator */}
-              <span className={`absolute -left-[41px] top-1/2 -translate-y-1/2 flex h-5.5 w-5.5 items-center justify-center rounded-full bg-slate-950 border border-slate-800 ring-4 ring-slate-900/60 z-10 transition-transform group-hover:scale-110`}>
+              <span className={`absolute -left-[41px] top-1/2 -translate-y-1/2 flex h-5.5 w-5.5 items-center justify-center rounded-full bg-transparent border border-slate-200 ring-4 ring-slate-900/60 z-10 transition-transform group-hover:scale-110`}>
                 <span className={`h-2.5 w-2.5 rounded-full ${styles.dot} shadow-lg`}></span>
               </span>
 
-              <Card className={`bg-slate-900/30 backdrop-blur-2xl border border-slate-800/80 border-l-4 ${styles.border} shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-slate-700 hover:translate-x-0.5`}>
+              <Card className={`bg-[rgb(var(--surface-0))]/40 backdrop-blur-2xl border border-slate-200/80 border-l-4 ${styles.border} shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-slate-200 hover:translate-x-0.5`}>
                 {/* Visual gradient highlight */}
                 <div className={`absolute inset-0 bg-gradient-to-r ${styles.bg} opacity-80 pointer-events-none`}></div>
                 
@@ -91,13 +91,13 @@ export default function PlannerTimeline({
                       <span className="text-xs font-extrabold uppercase tracking-widest text-slate-500">
                         {formatTime(block.scheduledStart)}
                       </span>
-                      <span className="text-[10px] font-bold bg-slate-950/80 text-slate-400 px-2 py-0.5 rounded-lg border border-slate-800">
+                      <span className="text-[10px] font-bold bg-transparent/80 text-[rgb(var(--text-muted))] px-2 py-0.5 rounded-lg border border-slate-200">
                         {block.durationMins} mins
                       </span>
                       <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border tracking-wide capitalize ${
                         block.status === 'COMPLETED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                         block.status === 'SKIPPED' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
-                        'bg-slate-950 text-slate-400 border-slate-800'
+                        'bg-transparent text-[rgb(var(--text-muted))] border-slate-200'
                       }`}>
                         {block.status.toLowerCase()}
                       </span>
@@ -106,7 +106,7 @@ export default function PlannerTimeline({
                     <h4 className="text-lg font-bold text-white tracking-tight leading-snug">
                       {block.topic.name}
                     </h4>
-                    <p className="text-xs text-slate-400 font-medium">
+                    <p className="text-xs text-[rgb(var(--text-muted))] font-medium">
                       Exam weightage: <span className="text-slate-350 font-bold">{block.topic.weightage}%</span> | Estimated prep: <span className="text-slate-350 font-bold">{block.topic.estimatedHours} hrs</span>
                     </p>
                   </div>
@@ -125,7 +125,7 @@ export default function PlannerTimeline({
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-slate-800 bg-slate-950/40 hover:bg-slate-800 text-slate-350 font-semibold rounded-xl h-9 px-3.5"
+                        className="border-slate-200 bg-transparent/40 hover:bg-slate-100 text-slate-350 font-semibold rounded-xl h-9 px-3.5"
                         onClick={() => onSkipBlock(block.id)}
                       >
                         <Ban className="w-3.5 h-3.5" /> Skip

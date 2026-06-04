@@ -171,14 +171,14 @@ export default function FlashcardsPage() {
   const allTopics = topicsData?.myExams?.flatMap((e: any) => e.topics) || []
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-start p-4 md:p-8 relative overflow-hidden">
+    <div className="min-h-screen bg-transparent flex flex-col justify-start p-4 md:p-8 relative overflow-hidden">
       {/* Visual background glows */}
       <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[350px] h-[350px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto w-full space-y-6 z-10">
         {/* Header Block */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/50 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/50 pb-6">
           <div>
             <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-1.5">
               <Layers className="w-3.5 h-3.5" /> Spaced Repetition Engine
@@ -186,28 +186,28 @@ export default function FlashcardsPage() {
             <h1 className="text-4xl font-black text-white tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
               Adaptive Flashcards
             </h1>
-            <p className="text-slate-400 text-sm mt-1">
+            <p className="text-[rgb(var(--text-muted))] text-sm mt-1">
               AI-generated cards calibrated via SM2 intervals for ultra-fast active recall
             </p>
           </div>
           <Button 
             variant="outline" 
             onClick={() => router.push('/dashboard')} 
-            className="border-slate-800 bg-slate-900/40 hover:bg-slate-800/80 text-slate-300 flex items-center gap-2 self-start md:self-auto rounded-xl"
+            className="border-slate-200 bg-[rgb(var(--surface-0))]/60 hover:bg-slate-100/80 text-[rgb(var(--text-secondary))] flex items-center gap-2 self-start md:self-auto rounded-xl"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </Button>
         </div>
 
         {/* Toggle tabs for flashcards/dashboard */}
-        <div className="flex bg-slate-900/60 backdrop-blur-xl border border-slate-900/80 p-1.5 rounded-2xl w-fit">
+        <div className="flex bg-[rgb(var(--surface-0))]/80 backdrop-blur-xl border border-slate-200/60 p-1.5 rounded-2xl w-fit">
           <Button
             variant="ghost"
             onClick={() => setActiveTab('practice')}
             className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'practice'
                 ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-transparent'
+                : 'text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text-primary))] hover:bg-transparent'
             }`}
           >
             Spaced Practice
@@ -221,7 +221,7 @@ export default function FlashcardsPage() {
             className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === 'dashboard'
                 ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-transparent'
+                : 'text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text-primary))] hover:bg-transparent'
             }`}
           >
             SM2 Analytics Dashboard
@@ -237,7 +237,7 @@ export default function FlashcardsPage() {
             <div className="space-y-6">
               {/* Stats Top-Level Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                <Card className="bg-slate-900/40 border-slate-800/80 p-5 relative overflow-hidden">
+                <Card className="bg-[rgb(var(--surface-0))]/60 border-slate-200/80 p-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-indigo-500"></div>
                   <span className="block text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Flashcards</span>
                   <div className="text-3xl font-black text-white mt-2">
@@ -246,7 +246,7 @@ export default function FlashcardsPage() {
                   <p className="text-[10px] text-indigo-400 mt-1 font-medium">Active recall items</p>
                 </Card>
 
-                <Card className="bg-slate-900/40 border-slate-800/80 p-5 relative overflow-hidden">
+                <Card className="bg-[rgb(var(--surface-0))]/60 border-slate-200/80 p-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-emerald-500"></div>
                   <span className="block text-[10px] uppercase font-bold text-slate-500 tracking-wider">Avg Ease Factor</span>
                   <div className="text-3xl font-black text-emerald-400 mt-2">
@@ -255,18 +255,18 @@ export default function FlashcardsPage() {
                   <p className="text-[10px] text-slate-500 mt-1">SM2 memory coefficient</p>
                 </Card>
 
-                <Card className="bg-slate-900/40 border-slate-800/80 p-5 relative overflow-hidden">
+                <Card className="bg-[rgb(var(--surface-0))]/60 border-slate-200/80 p-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-rose-500"></div>
                   <span className="block text-[10px] uppercase font-bold text-slate-500 tracking-wider">Overdue Reviews</span>
                   <div className={`text-3xl font-black mt-2 ${
-                    (statsData?.flashcardStats?.overdueCount || 0) > 0 ? 'text-rose-450 animate-pulse' : 'text-slate-400'
+                    (statsData?.flashcardStats?.overdueCount || 0) > 0 ? 'text-rose-450 animate-pulse' : 'text-[rgb(var(--text-muted))]'
                   }`}>
                     {statsData?.flashcardStats?.overdueCount || 0}
                   </div>
                   <p className="text-[10px] text-slate-500 mt-1">Require immediate practice</p>
                 </Card>
 
-                <Card className="bg-slate-900/40 border-slate-800/80 p-5 relative overflow-hidden">
+                <Card className="bg-[rgb(var(--surface-0))]/60 border-slate-200/80 p-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-sky-500"></div>
                   <span className="block text-[10px] uppercase font-bold text-slate-500 tracking-wider">Mastered Topics</span>
                   <div className="text-3xl font-black text-sky-400 mt-2">
@@ -278,7 +278,7 @@ export default function FlashcardsPage() {
 
               {/* PieChart Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="bg-slate-900/40 border-slate-800 p-6 md:col-span-2 flex flex-col justify-between">
+                <Card className="bg-[rgb(var(--surface-0))]/60 border-slate-200 p-6 md:col-span-2 flex flex-col justify-between">
                   <CardHeader className="p-0">
                     <CardTitle className="text-base font-extrabold text-white">Spaced Learning Progression</CardTitle>
                     <CardDescription className="text-slate-500 text-xs">Breakdown of syllabus topics currently in spaced queues</CardDescription>
@@ -318,13 +318,13 @@ export default function FlashcardsPage() {
                   </div>
                 </Card>
 
-                <Card className="bg-gradient-to-b from-slate-900/50 to-indigo-950/10 border border-slate-800 p-6 flex flex-col justify-between">
+                <Card className="bg-gradient-to-b from-slate-900/50 to-indigo-950/10 border border-slate-200 p-6 flex flex-col justify-between">
                   <div className="space-y-4">
                     <h3 className="font-extrabold text-white text-base flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-emerald-400" /> Retention Insight
                     </h3>
                     <div className="space-y-3.5 pt-2">
-                      <div className="p-3 bg-slate-950/40 border border-slate-900 rounded-xl">
+                      <div className="p-3 bg-transparent/40 border border-slate-100 rounded-xl">
                         <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Memory Status</span>
                         <p className="text-xs text-slate-350 mt-1 leading-relaxed">
                           {(statsData?.flashcardStats?.overdueCount || 0) > 0 
@@ -332,7 +332,7 @@ export default function FlashcardsPage() {
                             : '✅ Active recall targets achieved! All spaced flashcard reviews are up to date.'}
                         </p>
                       </div>
-                      <div className="p-3 bg-slate-950/40 border border-slate-900 rounded-xl">
+                      <div className="p-3 bg-transparent/40 border border-slate-100 rounded-xl">
                         <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">SM2 Calibration</span>
                         <p className="text-xs text-slate-350 mt-1 leading-relaxed">
                           Your average ease factor of **{(statsData?.flashcardStats?.averageEaseFactor || 2.5).toFixed(2)}** shows structured recall intervals.
@@ -353,14 +353,14 @@ export default function FlashcardsPage() {
         ) : (
           <>
             {/* Topic Selector Widget */}
-            <div className="p-4 rounded-2xl bg-slate-900/30 border border-slate-900/80 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div className="p-4 rounded-2xl bg-[rgb(var(--surface-0))]/40 border border-slate-200/60 flex flex-col sm:flex-row gap-4 items-center justify-between">
 
           <div className="text-left w-full sm:w-auto">
             <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
               Select Study Subject
             </label>
             {topicsLoading ? (
-              <span className="text-sm text-slate-400 animate-pulse">Loading syllabus...</span>
+              <span className="text-sm text-[rgb(var(--text-muted))] animate-pulse">Loading syllabus...</span>
             ) : (
               <select
                 value={selectedTopicId}
@@ -372,7 +372,7 @@ export default function FlashcardsPage() {
                   setDeck([])
                   setCompleted(false)
                 }}
-                className="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 w-full sm:w-72"
+                className="bg-[rgb(var(--surface-0))] border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-[rgb(var(--text-primary))] focus:outline-none focus:border-indigo-500 w-full sm:w-72"
               >
                 <option value="">-- Choose a Topic --</option>
                 {allTopics.map((topic: any) => (
@@ -397,15 +397,15 @@ export default function FlashcardsPage() {
 
         {/* Main interactive state space */}
         {!selectedTopicId ? (
-          <div className="py-24 text-center border-2 border-dashed border-slate-800/80 rounded-3xl bg-slate-900/10">
+          <div className="py-24 text-center border-2 border-dashed border-slate-200/80 rounded-3xl bg-[rgb(var(--surface-0))]/10">
             <BrainCircuit className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-            <h3 className="font-extrabold text-slate-400 text-lg">No Deck Loaded</h3>
+            <h3 className="font-extrabold text-[rgb(var(--text-muted))] text-lg">No Deck Loaded</h3>
             <p className="text-slate-500 text-xs mt-1 max-w-sm mx-auto">
               Please choose a syllabus topic from the dropdown selection above to start generating practice flashcards.
             </p>
           </div>
         ) : generating ? (
-          <div className="py-28 text-center border border-slate-900/60 rounded-3xl bg-slate-900/10 space-y-4">
+          <div className="py-28 text-center border border-slate-200/40 rounded-3xl bg-[rgb(var(--surface-0))]/10 space-y-4">
             <svg className="animate-spin h-10 w-10 text-indigo-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -416,7 +416,7 @@ export default function FlashcardsPage() {
             </p>
           </div>
         ) : deck.length === 0 ? (
-          <div className="py-20 text-center border border-slate-900/60 rounded-3xl bg-slate-900/10 space-y-5">
+          <div className="py-20 text-center border border-slate-200/40 rounded-3xl bg-[rgb(var(--surface-0))]/10 space-y-5">
             <HelpCircle className="w-12 h-12 text-indigo-400/40 mx-auto" />
             <div>
               <h3 className="font-bold text-white text-lg">No Active Flashcards</h3>
@@ -432,13 +432,13 @@ export default function FlashcardsPage() {
             </Button>
           </div>
         ) : completed ? (
-          <div className="py-16 text-center border border-slate-900/60 rounded-3xl bg-slate-900/15 p-8 relative overflow-hidden">
+          <div className="py-16 text-center border border-slate-200/40 rounded-3xl bg-[rgb(var(--surface-0))]/15 p-8 relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500 to-teal-400"></div>
             <div className="mx-auto h-16 w-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 animate-pulse">
               <BookmarkCheck className="w-8 h-8" />
             </div>
             <h3 className="font-black text-white text-2xl tracking-tight mb-2">Deck Fully Reviewed!</h3>
-            <p className="text-slate-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+            <p className="text-[rgb(var(--text-muted))] text-sm max-w-md mx-auto mb-8 leading-relaxed">
               Outstanding! You reviewed all {deck.length} flashcards for **{selectedTopicName}**. The SM2 spaced engine has rescheduled these items.
             </p>
             <div className="flex justify-center gap-3">
@@ -454,7 +454,7 @@ export default function FlashcardsPage() {
               <Button
                 variant="outline"
                 onClick={() => router.push('/dashboard')}
-                className="border-slate-800 text-slate-300 hover:bg-slate-900 h-11 px-5"
+                className="border-slate-200 text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface-0))] h-11 px-5"
               >
                 Return to Home
               </Button>
@@ -474,12 +474,12 @@ export default function FlashcardsPage() {
               className="h-80 w-full cursor-pointer relative select-none perspective group"
             >
               <div 
-                className={`w-full h-full duration-500 transform-style-3d relative rounded-3xl shadow-xl border border-slate-800/80 bg-slate-900/20 backdrop-blur-2xl flex items-center justify-center p-8 transition-transform ${
+                className={`w-full h-full duration-500 transform-style-3d relative rounded-3xl shadow-xl border border-slate-200/80 bg-[rgb(var(--surface-0))]/20 backdrop-blur-2xl flex items-center justify-center p-8 transition-transform ${
                   isFlipped ? 'rotate-y-180' : ''
                 }`}
               >
                 {/* Front Side: Question */}
-                <div className="absolute inset-0 backface-hidden flex flex-col justify-between p-8 text-center bg-slate-900/30 rounded-3xl">
+                <div className="absolute inset-0 backface-hidden flex flex-col justify-between p-8 text-center bg-[rgb(var(--surface-0))]/40 rounded-3xl">
                   <div className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Question (Click to reveal answer)</div>
                   <div className="text-lg md:text-xl font-extrabold text-white max-w-xl mx-auto px-4 self-center leading-relaxed">
                     {deck[currentIndex].question}
@@ -490,7 +490,7 @@ export default function FlashcardsPage() {
                 {/* Back Side: Answer */}
                 <div className="absolute inset-0 backface-hidden rotate-y-180 flex flex-col justify-between p-8 text-center bg-indigo-950/20 rounded-3xl">
                   <div className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Answer Explanation</div>
-                  <div className="text-sm md:text-base font-semibold text-slate-200 max-w-xl mx-auto px-4 self-center leading-relaxed whitespace-pre-wrap">
+                  <div className="text-sm md:text-base font-semibold text-[rgb(var(--text-primary))] max-w-xl mx-auto px-4 self-center leading-relaxed whitespace-pre-wrap">
                     {deck[currentIndex].answer}
                   </div>
                   <div className="text-[10px] text-slate-500 font-medium">Click Card to Flip 🔄</div>

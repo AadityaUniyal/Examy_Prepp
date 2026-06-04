@@ -15,11 +15,11 @@ export default function EmptyState({
   onAction
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-8 bg-slate-900/40 border border-slate-800/80 rounded-2xl text-center">
+    <div className="flex flex-col items-center justify-center p-8 bg-[rgb(var(--surface-0))]/60 border border-slate-200/80 rounded-2xl text-center">
       <div className="p-3 bg-slate-800/50 rounded-full mb-4">
         <Inbox className="w-6 h-6 text-slate-500" />
       </div>
-      <p className="text-slate-400 text-xs mb-4 leading-relaxed max-w-xs">{message}</p>
+      <p className="text-[rgb(var(--text-muted))] text-xs mb-4 leading-relaxed max-w-xs">{message}</p>
       {actionLabel && onAction && (
         <button
           onClick={onAction}
